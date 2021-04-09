@@ -1,0 +1,110 @@
+name: SimpleCommands
+version: ${project.version}
+main: wg.simple.simplecommands.SimpleCommands
+authors: [ DJKK12, Devie ]
+description: Simple essentials plugin
+commands:
+  unblockmsg:
+    usage: /unblockmsg [player]
+    description: unblock player in private message
+    permission: watchTowerGui.commands.player.unblockmsg
+  blockmsg:
+    usage: /blockmsg [player]
+    description: block player in private message
+    permission: watchTowerGui.commands.player.blockmsg
+  msg:
+    usage: /msg [player]
+    description: send private message to player
+    permission: watchTowerGui.commands.player.msg
+  inf:
+    usage: /inf
+    description: show basic options
+    permission: watchTowerGui.commands.player.inf
+  tpa:
+    usage: /tpa [player]
+    descritpion: send a teleportation request
+    permission: watchTowerGui.commands.vip.tpa
+  tpaccept:
+    usage: /tpaccept
+    description: accept teleportation request
+    permission: watchTowerGui.commands.player.tpacceptPerm
+  tpdeny:
+    usage: /tpdeny
+    description: deny your command
+    permission: watchTowerGui.commands.player.tpcPerm
+  sethome:
+    usage: /sethome [homeName]
+    description: set your home, which you can teleport to it
+    permission: watchTowerGui.commands.player.sethome
+  delhome:
+    usage: /delhom [homeName]
+    description: remove your home
+    permission: watchTowerGui.commands.player.delhome
+  homelist:
+    usage: /homelist
+    description: show your homes
+    permission: watchTowerGui.commands.player.homelist
+  home:
+    usage: /home [homeName]
+    description: teleport to your home
+    permission: watchTowerGui.commands.player.home
+  back:
+    usage: /back
+    description: return to the place you dead last
+    permission: watchTowerGui.commands.vip.backPerm
+  rtp:
+    usage: /rtp
+    description: teleport to random place;
+    permission: watchTowerGui.commands.player.rtp
+  setwarp:
+    usage: /setwarp [warpName]
+    description: set new warp
+    permission: watchTowerGui.commands.admin.setWarps
+  removewarp:
+    usage: /removewarp [warpName]
+    description: remove existing warp
+    permission: watchTowerGui.commands.admin.deleteWarp
+  warp:
+    usage: /warp [warpName]
+    description: teleport to existingWarp
+    permission: watchTowerGui.commands.player.warp
+  warplist:
+    usage: /warplist
+    description: show all warp that already exist
+    permission: watchTowerGui.commands.player.warplist
+  removespawn:
+    usage: /removespawn
+    description: remove spawn in world you are
+    permission: watchTowerGui.commands.admin.removespawn
+  setspawn:
+    usage: /setspawn
+    description: set spawn for world you are
+    permission: watchTowerGui.commands.admin.setspawn
+  spawn:
+    usage: /spawn
+    description: teleport to spawn
+    permission: watchTowerGui.commands.player.spawn
+  removehub:
+    usage: /removehub
+    description: remove hub
+    permission: watchTowerGui.commands.admin.removehub
+  sethub:
+    usage: /sethub
+    description: set hub in place you are
+    permission: watchTowerGui.commands.admin.sethub
+  hub:
+    usage: /hub
+    description: teleport to hub
+    permission: watchTowerGui.commands.player.hub
+  sudo:
+    usage: /sudo [player] [command_and_arguments]
+    description: execute command as another player
+    permission: watchTowerGui.commands.admin.sudo
+  homeMenu:
+    usage: /homemenu [player]
+    description: show player's homes
+    permission: watchTowerGui.commands.player.homemenu
+  warpmenu:
+    usage: /warpmenu <warp>
+    description: show information about given warp
+    permission: watchTowerGui.commands.admin.warpmenu

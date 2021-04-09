@@ -1,0 +1,156 @@
+# <================================[Admin Gui]================================>
+#
+#      WWWWWWWW                           WWWWWWWW             GGGGGGGGGGGGG
+#      W::::::W                           W::::::W          GGG::::::::::::G
+#      W::::::W                           W::::::W        GG:::::::::::::::G
+#      W::::::W                           W::::::W       G:::::GGGGGGGG::::G
+#       W:::::W           WWWWW           W:::::W       G:::::G       GGGGGG
+#        W:::::W         W:::::W         W:::::W       G:::::G
+#         W:::::W       W:::::::W       W:::::W        G:::::G
+#          W:::::W     W:::::::::W     W:::::W         G:::::G    GGGGGGGGGG
+#           W:::::W   W:::::W:::::W   W:::::W          G:::::G    G::::::::G
+#            W:::::W W:::::W W:::::W W:::::W           G:::::G    GGGGG::::G
+#             W:::::W:::::W   W:::::W:::::W            G:::::G        G::::G
+#              W:::::::::W     W:::::::::W              G:::::G       G::::G
+#               W:::::::W       W:::::::W                G:::::GGGGGGGG::::G
+#                W:::::W         W:::::W                  GG:::::::::::::::G
+#                 W:::W           W:::W                     GGG::::::GGG:::G
+#                  WWW             WWW                         GGGGGG   GGGG
+#
+# <==================================[About]==================================>
+# Remove this file to return to defaults
+# Here you can set your own language
+# by changing below values
+# Chat Colors:
+# - &0 - Black
+# - &1 - Dark Blue
+# - &2 - Dark Green
+# - &3 - Dark Aqua
+# - &4 - Dark Red
+# - &5 - Dark Purple
+# - &6 - Gold
+# - &7 - Gray
+# - &8 - Dark Gray
+# - &9 - Blue
+# - &a - Green
+# - &b - Aqua
+# - &c - Red
+# - &d - Light Purple
+# - &e - Yellow
+# - &f - White
+# Text types:
+# - &k - Obfuscated
+# - &l - Bold
+# - &m - Strikethrough
+# - &n - Underline
+# - &o - Italic
+# - &r - Color Reset
+# - \n - next Line
+# Usage:
+# ==> &l&3Word <==> &3Word <==> &lWord:
+#     - the font type must be the first, followed by the color
+#     - !!IMPORTANT if you change the order, It will not work
+# <=======[About]=======>
+PrivateChat:
+  adminCanSeePrivateMessages:
+    playerBlockedByPlayer: '&b&l[playerName1] &f&lblocked => &b&l[playerName2]'
+    playerUnBlockedByPlayer: '&b&l[playerName1] &f&lunblocked => &b&l[playerName2]'
+    playerSentToPlayer: '&b&l[playerName1] &f&lsent &b&l[playerName2] &e&l=>&6&l [message]'
+  InteractiveMessage:
+    mainMessage: '&4&l[BLOCK] &f&lor type &b&l/block or /block [player]'
+    hover: '/blockmsg'
+  youCanNotUnblockTwice: '&c&lYou can not unblock non blocked player!'
+  youCanNotBlockYourself: '"&c&lYou can not block yourself"'
+  youCanNotMsgYourself: '"&c&lYou can not send private message to yourself"'
+  playerNotExists: '&c&lPlayer: &f&l[playerName] &c&lnot exists!'
+  messageHasBeenSent: '&a&lMessage has been sent'
+  enterMessageInChat: '&e&lEnter message in chat'
+  msgCommand:
+    messageForBlockedPlayer:
+      playerSentMessage: '&6&l[playerName] &f&lsent => &b&l[message]'
+      messageToBlockPlayer: '&f&lYou are blocked and you &c&lcan not reply &f&lto this message!'
+    messageForNonBlockedPlayer:
+      playerSentMessage: '&6&l[playerName] &f&lsent => &b&l[message]'
+  blockCommand:
+    youBlocked: '&a&lYou blocked: &f&l[playerName]'
+    youAreBlockedBy: '&c&lYou are blocked by: &f&l[playerName]'
+    youAreBlocked: '&c&lYou are blocked'
+  unblockCommand:
+    youHaveBeenUnBlocked: '&a&lYou have been unblocked by: &f&l[playerName]'
+    successfullyUnblocked: '&a&lYou successfully unblocked: &f&l[playerName]'
+General:
+  commands:
+    adminGui:
+      playerIsOffline: '&c&lPlayer is offline'
+      youMoved: '&c&lYou moved!'
+      teleportationMessage: '&2&lYou will be teleported in &6&l5 &2&lsec, don''t move'
+      minecraftCommandsNoPerm: '&c&lSORRY &6&lbut you don''t have permission for that!'
+      infCommand:
+        '1': '&b&l-------------------[Server]-------------------'
+        '2': '&6&l/tpa &6&l/tpaccept /tpdeny &f&ltpa commands'
+        '3': '&6&l/back &f&lReturn to death location &4&l!ONLY &d&lVIP'
+        '4': '&6&l/home &6&l/sethome &6&l/delhome &6&l/homelist &f&lHome commands'
+        '5': '&6&l/warp &f&lTeleport to specific location beside spawn'
+        '6': '&6&l/reserve &6&l/removeplot &f&lclaim/remove plot'
+        '7': '&6&l/plot &f&lConfigure your plot'
+        '8': '&6&l/hub &f&lReturn on main serwer spawn'
+        '9': '&6&l/spawn &f&lReturn on world spawn.'
+        '10': '&b&l---------------------------------------------'
+    rtp:
+      rtpFaildtofindSafeLocation: '&c&lFail to find save random location for you'
+    sudoSuccessful: '&2&lCommand has been revoked!'
+    sudoError: '&c&lCommand has''nt been revoked!'
+    permissions:
+      onlyPlayer: '&c&lOnly player can execute this command!'
+    homes:
+      playerHasNoHomes: '&c&lThis player has no homes!'
+      alreadyHaveHome: '&c&lYou''ve just had home named [homeName]'
+      setHomeSuccess: '&2&lHome has been set!'
+      noSuchHome: '&c&lYou don''t have home named: &6&l[homeName]'
+      homeRemovedSuccessfully: '&a&lSuccessfully removed home!'
+      homeRemovedFailed: '&c&lUnable to remove this home'
+      successfullyTeleported: '&a&lSuccessfully teleported'
+      unableToTeleport: '&c&lTeleportation failed!'
+      playerDontHaveThatHome: '&c&lYou do not have a home with that name'
+      yourHomes: '&b&lYour homes:'
+      youhaveNoHomes: '&c&lYou have no homes!'
+      homeDir: '&f&lName: &6&l[homeName]'
+      homeLimit: '&c&lYour home count reach limit!'
+    warps:
+      warpListNoWarps: '&c&lNo warp exist!'
+      warpListWarpNamesHeader: '&5&lWarps: '
+      warpListWarpNames: '&e&l[warpName]&6: [worldName] &f&l| &c&lX&c: [X] &f&l| &9&lY&9: [Y] &f&l| &a&lZ&a: [Z]'
+      warpNotExists: '&c&lWarp doesn''t exists!'
+      warpRemoved: '&2&lWarp has been removed!'
+      warpExists: '&e&lWarp with that name already exists!'
+      warpHasBeenPlaced: '&2&lWarp has been placed!'
+      warpTeleported: '&2&lYou has been teleported to warp!'
+      warpBadArgs: '&e&lYou must enter a warp name!'
+    backCom:
+      playerNotDied: '&c&lYou aren''t dead'
+    tpa:
+      noRequests: '&c&lYou don''t have any requests!'
+      youCantTeleportToYourSelf: '&c&lYou can''t teleport to yourself!'
+      requestSent: '&2&lRequest to teleport has been sent'
+      playerHasAlreadyHadTeleportationRequest: '&c&lThis player has already teleportation
+        request!'
+      hoverMessages:
+        acceptMessage: '&2&l[ACCEPT]'
+        denyMessage: '&c&l[DENY]'
+      requestAccepted: '&2&lYour request has been accepted!'
+      playerAcceptedRequest: '&2&lPlayer has accepted your request'
+      playerWantsToTeleport: '&6&l[playerName] &f&lwants to teleport to you!'
+      teleportedByRequest: '&2&lYou have been teleported!'
+      playerHasBeenTeleported: '&2&lPlayer has been teleported to your localization!'
+      teleportedByRequestDenied: '&c&lTeleportation denied!'
+      playerDeniedYourRequest: '&c&lPlayer denied your request!'
+    hubs:
+      hubRemoved: '&2&lHub has been removed'
+      hubChanged: '&2&lHub location has been changed'
+      hubNotExists: '&c&lHub doesn''t exists'
+      hubCreated: '&2&lHub has been successfully created'
+    spawns:
+      spawnChanged: '&2&lSpawn location has been changed'
+      spawnRemoved: '&2&lSpawn has been removed'
+      spawnNotExists: '&c&lThis world doesn''t have a spawn'
+      spawnCreated: '&2&lSpawn has been successfully created'

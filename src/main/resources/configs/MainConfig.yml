@@ -1,0 +1,56 @@
+# <================================[Admin Gui]================================>
+#
+#      WWWWWWWW                           WWWWWWWW             GGGGGGGGGGGGG
+#      W::::::W                           W::::::W          GGG::::::::::::G
+#      W::::::W                           W::::::W        GG:::::::::::::::G
+#      W::::::W                           W::::::W       G:::::GGGGGGGG::::G
+#       W:::::W           WWWWW           W:::::W       G:::::G       GGGGGG
+#        W:::::W         W:::::W         W:::::W       G:::::G
+#         W:::::W       W:::::::W       W:::::W        G:::::G
+#          W:::::W     W:::::::::W     W:::::W         G:::::G    GGGGGGGGGG
+#           W:::::W   W:::::W:::::W   W:::::W          G:::::G    G::::::::G
+#            W:::::W W:::::W W:::::W W:::::W           G:::::G    GGGGG::::G
+#             W:::::W:::::W   W:::::W:::::W            G:::::G        G::::G
+#              W:::::::::W     W:::::::::W              G:::::G       G::::G
+#               W:::::::W       W:::::::W                G:::::GGGGGGGG::::G
+#                W:::::W         W:::::W                  GG:::::::::::::::G
+#                 W:::W           W:::W                     GGG::::::GGG:::G
+#                  WWW             WWW                         GGGGGG   GGGG
+#
+# <==================================[About]==================================>
+# Remove this file to return to defaults
+#  Here you can change basic
+#  server settings by setting:
+#  - boolean values => "false" <-> "true
+#  - ban time:
+#    ==> %S  => seconds => %S<number>  => example %S10  => 10 seconds
+#    ==> %Mi => minutes => %Mi<number> => example %Mi10 => 10 minutes
+#    ==> %H  => hours   => %H<number>  => example %Mi10 => 10 hours
+#    ==> %D  => days    => %D<number>  => example %Mi10 => 10 days
+#    ==> %W  => weeks   => %W<number>  => example %Mi10 => 10 weeks
+#    ==> %Mo => months  => %Mo<number> => example %Mi10 => 10 months
+#    ==> %Y  => years   => %Y<number>  => example %Mi10 => 10 years
+#    !!IMPORTANT!! => if you want to skip one value just set 0 => example => %W0
+#    ==> EXAMPLE => %S10 %Mi0 %H0 %D0 %W0 %Mo0 %Y0 ==> ban time = 10 seconds
+# <=======[About]=======>
+Configurations:
+  world:
+    # Here you can specify if you want to teleport player to hub after death
+    teleportingToHubAfterDeath: false
+    # Here you can specify if you want to teleport player to world spawn after death
+    teleportingToSpawnAfterDeath: true
+    # Here you can specify if you want to teleport player to gub when joins first time
+    teleportToHubIfJoinFirtTime: true
+    # Here you can specify if you want to teleport player to hub every time when joins the server
+    alwaysTeleportToHubWhenJoin: false
+  homes:
+    # Here you can specify a basic count of homes
+    normalHomeLimit: 3
+    # Here you can specify a premium count of homes
+    premiumHomeLimit: 5
+  tp:
+    # All bottom values are in minecraft ticks: 20 ticks = 1 seconds
+    # Time player has to wait without moving before teleport through /tp, /home, /warp etc.
+    teleportWaitTime: 100
+    # Time after teleport request expires
+    teleportExpiryTime: 10000

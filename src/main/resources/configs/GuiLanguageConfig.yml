@@ -1,0 +1,83 @@
+# <================================[Admin Gui]================================>
+#
+#      WWWWWWWW                           WWWWWWWW             GGGGGGGGGGGGG
+#      W::::::W                           W::::::W          GGG::::::::::::G
+#      W::::::W                           W::::::W        GG:::::::::::::::G
+#      W::::::W                           W::::::W       G:::::GGGGGGGG::::G
+#       W:::::W           WWWWW           W:::::W       G:::::G       GGGGGG
+#        W:::::W         W:::::W         W:::::W       G:::::G
+#         W:::::W       W:::::::W       W:::::W        G:::::G
+#          W:::::W     W:::::::::W     W:::::W         G:::::G    GGGGGGGGGG
+#           W:::::W   W:::::W:::::W   W:::::W          G:::::G    G::::::::G
+#            W:::::W W:::::W W:::::W W:::::W           G:::::G    GGGGG::::G
+#             W:::::W:::::W   W:::::W:::::W            G:::::G        G::::G
+#              W:::::::::W     W:::::::::W              G:::::G       G::::G
+#               W:::::::W       W:::::::W                G:::::GGGGGGGG::::G
+#                W:::::W         W:::::W                  GG:::::::::::::::G
+#                 W:::W           W:::W                     GGG::::::GGG:::G
+#                  WWW             WWW                         GGGGGG   GGGG
+#
+# <==================================[About]==================================>
+# Remove this file to return to defaults
+# Here you can set your own language
+# by changing below values
+# Chat Colors:
+# - &0 - Black
+# - &1 - Dark Blue
+# - &2 - Dark Green
+# - &3 - Dark Aqua
+# - &4 - Dark Red
+# - &5 - Dark Purple
+# - &6 - Gold
+# - &7 - Gray
+# - &8 - Dark Gray
+# - &9 - Blue
+# - &a - Green
+# - &b - Aqua
+# - &c - Red
+# - &d - Light Purple
+# - &e - Yellow
+# - &f - White
+# Text types:
+# - &k - Obfuscated
+# - &l - Bold
+# - &m - Strikethrough
+# - &n - Underline
+# - &o - Italic
+# - &r - Color Reset
+# - \n - next Line
+# Usage:
+# ==> &l&3Word <==> &3Word <==> &lWord:
+#     - the font type must be the first, followed by the color
+#     - !!IMPORTANT if you change the order, It will not work
+# <=======[About]=======>
+Guis:
+  adminGui:
+    back: '&f&lGo Back'
+    close: '&c&lClose'
+    warpsGui:
+      pageName: '&5&lWarps'
+      itemName: '&d&l[warpName]'
+    singleWarpGui:
+      warpNameItem: '&a&lName: &f&l[warpName]'
+      locationItem:
+        name: '&5&lWarp Location:'
+        x: '&c&lX: &f&l[X]'
+        y: '&e&lY: &f&l[Y]'
+        z: '&9&lZ: &f&l[Z]'
+        clickToTeleport: '&b&lClick to teleport'
+      removeWarpItem: '&c&lRemove warp'
+    singleHomesGui:
+      homeNameItem:
+        name: '&a&lName: &f&l[homeName]'
+        owner: '&b&lOwner: &f&l[owner]'
+      locationItem:
+        name: '&5&lHome Location:'
+        x: '&c&lX: &f&l[X]'
+        y: '&e&lY: &f&l[Y]'
+        z: '&9&lZ: &f&l[Z]'
+        clickToTeleport: '&b&lClick to teleport'
+      removeHomeItem: '&c&lRemove home'
+    homesGui:
+      guiPageName: '[playerName] homes'
+      name: 'Name: [homeName]'
