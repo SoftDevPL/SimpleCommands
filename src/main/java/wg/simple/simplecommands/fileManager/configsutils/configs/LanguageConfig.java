@@ -156,7 +156,7 @@ public class LanguageConfig extends ConfigAccessor {
         this.noSuchHome = this.getStringPath("General.commands.homes.noSuchHome");
         this.setHomeSuccess = this.getStringPath("General.commands.homes.setHomeSuccess");
         this.alreadyHaveHomeNamed = this.getStringPath("General.commands.homes.alreadyHaveHome");
-        this.mesPlayerNotFound = this.getStringPath("General.commands.freeze.playerNotFound");
+        this.mesPlayerNotFound = this.getStringPath("General.commands.playerNotFound");
         this.onlyPlayerCanExecuteCommand = this.getStringPath("General.commands.permissions.onlyPlayer");
         this.playerIsOffline = this.getStringPath("General.commands.adminGui.playerIsOffline");
         this.minecraftCommandsNoPerm = this.getStringPath("General.commands.adminGui.minecraftCommandsNoPerm");

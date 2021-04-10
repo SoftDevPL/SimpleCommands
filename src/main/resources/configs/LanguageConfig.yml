@@ -80,6 +80,7 @@ PrivateChat:
     successfullyUnblocked: '&a&lYou successfully unblocked: &f&l[playerName]'
 General:
   commands:
+    playerNotFound: '&4&lPlayer &f&l[playerName] &4&lnot found'
     adminGui:
       playerIsOffline: '&c&lPlayer is offline'
       youMoved: '&c&lYou moved!'
