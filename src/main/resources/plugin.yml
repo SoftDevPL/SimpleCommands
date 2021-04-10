@@ -1,8 +1,9 @@
 name: SimpleCommands
 version: ${project.version}
 main: wg.simple.simplecommands.SimpleCommands
-authors: [ DJKK12, Devie ]
+authors: [ Devie, DJKK12 ]
 description: Simple essentials plugin
+depend:  [ WorldGuard ]
 commands:
   unblockmsg:
     usage: /unblockmsg [player]

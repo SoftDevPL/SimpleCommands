@@ -35,18 +35,16 @@ public class WarpCommand extends WarpTabCompleter implements CommandExecutor, Li
                     player.sendMessage(languageConfig.getWarpNotExists());
                     return true;
                 }
-
                 Bukkit.getPluginManager().callEvent(new PlayerStartsTeleportEvent(player, () -> Bukkit.getPluginManager().callEvent(
                         new PlayerWarpEvent(player, player.getLocation(), warpToTeleport.getLocation(), warpToTeleport))));
             } else {
                 player.sendMessage(languageConfig.getWarpBadArgs());
                 sender.sendMessage(CommandsManager.getDescription(label, command));
             }
-            return true;
         } else {
             sender.sendMessage(languageConfig.getOnlyPlayerCanExecuteCommand());
-            return true;
         }
+        return true;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
