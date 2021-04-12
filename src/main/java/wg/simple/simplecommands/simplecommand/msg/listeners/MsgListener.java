@@ -23,6 +23,7 @@ import java.util.*;
 public class MsgListener implements Listener {
 
     public final Map<UUID, PrivateMessageRequest> requestMap = new HashMap<>();
+    private final Map<UUID, Boolean> sentMessages = new HashMap<>();
     public LanguageConfig languageConfig;
     private List<PrivateMessageRequest> messageRequests = new ArrayList<>();
     @Getter
@@ -104,9 +105,6 @@ public class MsgListener implements Listener {
         if (messageRequests.contains(messageRequest)) {
             receiver.sendMessage(languageConfig.getPrivateChatMsgCommandMessageForBlockedPlayerPlayerSentMessage(receiver.getName(), message) + "\n");
             receiver.sendMessage(languageConfig.getPrivateChatMsgCommandMessageForBlockedPlayerMessageToBlockPlayer());
-            TextComponent block = new TextComponent(languageConfig.getPrivateChatInteractiveMessageMainMessage());
-            block.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(languageConfig.getPrivateChatInteractiveMessageHover()).create()));
-            block.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/blockmsg"));
         }
     }
 
@@ -117,13 +115,16 @@ public class MsgListener implements Listener {
                 PrivateMessageRequest privateMessageRequest = new PrivateMessageRequest(player, playerToReply);
                 requestMap.put(playerToReply.getUniqueId(), privateMessageRequest);
             }
-            TextComponent block = new TextComponent(SimpleCommands.convertColors(languageConfig.getPrivateChatInteractiveMessageMainMessage()));
-            block.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(languageConfig.getPrivateChatInteractiveMessageHover()).create()));
-            block.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/blockmsg"));
-
             player.sendMessage(languageConfig.getPrivateChatMessageHasBeenSent());
             playerToReply.sendMessage(languageConfig.getPrivateChatMsgCommandMessageForNonBlockedPlayerPlayerSentMessage(player.getName(), message) + "\n");
-            playerToReply.spigot().sendMessage(new ComponentBuilder(block).create());
+
+            if (!sentMessages.containsKey(playerToReply.getUniqueId())) {
+                sentMessages.put(playerToReply.getUniqueId(), true);
+                TextComponent block = new TextComponent(SimpleCommands.convertColors(languageConfig.getPrivateChatInteractiveMessageMainMessage()));
+                block.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(languageConfig.getPrivateChatInteractiveMessageHover()).create()));
+                block.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/blockmsg"));
+                playerToReply.spigot().sendMessage(new ComponentBuilder(block).create());
+            }
         }
     }
 

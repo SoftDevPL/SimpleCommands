@@ -45,9 +45,6 @@ public class ChatManager implements Listener {
         chatTasks.clear();
     }
 
-    /**
-     * task are running asynchronously
-     */
     public void setTask(UUID playerUUID, PlayerChatAction action) {
         chatTasks.put(playerUUID, action);
     }

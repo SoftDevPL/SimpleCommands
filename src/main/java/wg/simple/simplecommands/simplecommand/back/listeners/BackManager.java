@@ -3,10 +3,12 @@ package wg.simple.simplecommands.simplecommand.back.listeners;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.potion.PotionEffect;
 import wg.simple.simplecommands.SimpleCommands;
 import wg.simple.simplecommands.fileManager.configsutils.configs.LanguageConfig;
 import wg.simple.simplecommands.fileManager.sql.sqlUtils.databasescommands.AdminGuiDatabase;
@@ -85,6 +87,23 @@ public class BackManager implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void playerTeleporting(PlayerBackEvent event) {
         event.getPlayer().teleport(event.getBackLocation());
+        safeTeleportPlayer(event.getPlayer());
         event.getPlayer().sendMessage(languageConfig.getSuccessfullyTeleport());
     }
+
+    private void removeAllNegativePotionEffects(Player player) {
+        for (PotionEffect effect : player.getActivePotionEffects()) {
+            player.removePotionEffect(effect.getType());
+        }
+        player.setFireTicks(0);
+    }
+
+    private void safeTeleportPlayer(Player player) {
+        player.setInvulnerable(true);
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(SimpleCommands.getInstance(), () -> {
+            player.setInvulnerable(false);
+            removeAllNegativePotionEffects(player);
+        }, 100);
+    }
+
 }

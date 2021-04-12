@@ -27,22 +27,21 @@ public class SetWarpCommand implements CommandExecutor, Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (args.length >= 1) {
-                String warpName = args[0];
-                Warp warpToRemove = warpManager.getWarpByName(warpName);
-                if (warpToRemove != null) {
-                    sender.sendMessage(languageConfig.getWarpExists());
-                    return true;
-                }
-                Bukkit.getPluginManager().callEvent(new PlayerSetWarpEvent(player, new Warp(player.getLocation(), warpName)));
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(languageConfig.getOnlyPlayerCanExecuteCommand());
+            return true;
+        }
+        Player player = (Player) sender;
+        if (args.length >= 1) {
+            Warp warpToRemove = warpManager.getWarpByName(args[0]);
+            if (warpToRemove != null) {
+                sender.sendMessage(languageConfig.getWarpExists());
                 return true;
             }
-            sender.sendMessage(CommandsManager.getDescription(label, command));
-        } else {
-            sender.sendMessage(languageConfig.getOnlyPlayerCanExecuteCommand());
+            Bukkit.getPluginManager().callEvent(new PlayerSetWarpEvent(player, new Warp(player.getLocation(), args[0])));
+            return true;
         }
+        sender.sendMessage(CommandsManager.getDescription(label, command));
         return true;
     }
 

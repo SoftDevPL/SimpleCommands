@@ -11,7 +11,6 @@ import org.bukkit.event.Listener;
 import wg.simple.simplecommands.SimpleCommands;
 import wg.simple.simplecommands.fileManager.configsutils.configs.LanguageConfig;
 import wg.simple.simplecommands.managers.CommandsManager;
-import wg.simple.simplecommands.managers.Permissions;
 import wg.simple.simplecommands.simplecommand.homes.Home;
 import wg.simple.simplecommands.simplecommand.homes.events.PlayerSetHomeEvent;
 import wg.simple.simplecommands.simplecommand.homes.listeners.HomeManager;
@@ -19,10 +18,8 @@ import wg.simple.simplecommands.simplecommand.homes.listeners.HomeManager;
 public class SetHomeCommand implements CommandExecutor, Listener {
     private final LanguageConfig languageConfig;
     private final HomeManager homeManager;
-    public Permissions permissions;
 
     public SetHomeCommand(SimpleCommands plugin) {
-        permissions = plugin.permissions;
         this.languageConfig = plugin.configsManager.languageConfig;
         this.homeManager = plugin.listenersManager.homeManager;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -30,22 +27,21 @@ public class SetHomeCommand implements CommandExecutor, Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (args.length >= 1) {
-                String homeName = args[0];
-                if (homeManager.hasAlreadyHome(player.getUniqueId(), homeName)) {
-                    player.sendMessage(languageConfig.getAlreadyHaveHomeNamed(homeName));
-                    return true;
-                }
-                Bukkit.getServer().getPluginManager().callEvent(new PlayerSetHomeEvent(player,
-                        new Home(player.getUniqueId(), player.getLocation(), homeName)));
-                return true;
-            }
-            sender.sendMessage(CommandsManager.getDescription(label, command));
-        } else {
+        if (!(sender instanceof Player)) {
             sender.sendMessage(languageConfig.getOnlyPlayerCanExecuteCommand());
+            return true;
         }
+        if (args.length == 0) {
+            sender.sendMessage(CommandsManager.getDescription(label, command));
+            return true;
+        }
+        Player player = (Player) sender;
+        if (homeManager.hasAlreadyHome(player.getUniqueId(), args[0])) {
+            player.sendMessage(languageConfig.getAlreadyHaveHomeNamed(args[0]));
+            return true;
+        }
+        Bukkit.getServer().getPluginManager().callEvent(new PlayerSetHomeEvent(player,
+                new Home(player.getUniqueId(), player.getLocation(), args[0])));
         return true;
     }
 

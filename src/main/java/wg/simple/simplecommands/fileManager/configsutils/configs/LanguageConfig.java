@@ -3,6 +3,7 @@ package wg.simple.simplecommands.fileManager.configsutils.configs;
 
 import wg.simple.simplecommands.fileManager.configsutils.resourcesConfigGenerator.ConfigAccessor;
 import wg.simple.simplecommands.fileManager.configsutils.resourcesConfigGenerator.LiteralType;
+import wg.simple.simplecommands.simplecommand.homes.Home;
 
 public class LanguageConfig extends ConfigAccessor {
 
@@ -63,7 +64,6 @@ public class LanguageConfig extends ConfigAccessor {
     private String playerHasBeenTeleported;
     private String teleportedByRequestDenied;
     private String playerDeniedYourRequest;
-    private String warpBadArgs;
     private String warpListNoWarps;
     private String warpListWarpNamesHeader;
     private String warpListWarpNames;
@@ -90,8 +90,7 @@ public class LanguageConfig extends ConfigAccessor {
     private String privateChatYouCanNotUnblockTwice;
 
     public void init() {
-        super.init("LanguageConfig");
-
+        super.init("Locale_en");
         this.privateChatYouCanNotUnblockTwice = this.getStringPath("PrivateChat.youCanNotUnblockTwice");
         this.privateChatPlayerNotExists = this.getStringPath("PrivateChat.playerNotExists");
         this.privateChatYouCanNotBlockYourself = this.getStringPath("PrivateChat.youCanNotBlockYourself");
@@ -117,7 +116,6 @@ public class LanguageConfig extends ConfigAccessor {
         this.warpListNoWarps = this.getStringPath("General.commands.warps.warpListNoWarps");
         this.warpListWarpNamesHeader = this.getStringPath("General.commands.warps.warpListWarpNamesHeader");
         this.warpListWarpNames = this.getStringPath("General.commands.warps.warpListWarpNames");
-        this.warpBadArgs = this.getStringPath("General.commands.warps.warpBadArgs");
         this.teleportedByRequestDenied = this.getStringPath("General.commands.tpa.teleportedByRequestDenied");
         this.playerDeniedYourRequest = this.getStringPath("General.commands.tpa.playerDeniedYourRequest");
         this.playerHasBeenTeleported = this.getStringPath("General.commands.tpa.playerHasBeenTeleported");
@@ -147,7 +145,11 @@ public class LanguageConfig extends ConfigAccessor {
         this.warpNotExists = this.getStringPath("General.commands.warps.warpNotExists");
         this.homeLimit = this.getStringPath("General.commands.homes.homeLimit");
         this.noRequests = this.getStringPath("General.commands.tpa.noRequests");
-        this.homeDir = this.getStringPath("General.commands.homes.homeDir");
+
+        this.homeDir = this.getStringPath("General.commands.homes.homelist.homeDir");
+        this.yourHomes = this.getStringPath("General.commands.homes.homelist.yourHomes");
+        this.youhaveNoHomes = this.getStringPath("General.commands.homes.homelist.youhaveNoHomes");
+
         this.playerNotDied = this.getStringPath("General.commands.backCom.playerNotDied");
         this.unableToTeleport = this.getStringPath("General.commands.homes.unableToTeleport");
         this.successfullyTeleport = this.getStringPath("General.commands.homes.successfullyTeleported");
@@ -171,8 +173,8 @@ public class LanguageConfig extends ConfigAccessor {
         this.infCommand9 = this.getStringPath("General.commands.adminGui.infCommand.9");
         this.infCommand10 = this.getStringPath("General.commands.adminGui.infCommand.10");
         this.playerDontHaveThatHome = this.getStringPath("General.commands.homes.playerDontHaveThatHome");
-        this.yourHomes = this.getStringPath("General.commands.homes.yourHomes");
-        this.youhaveNoHomes = this.getStringPath("General.commands.homes.youhaveNoHomes");
+
+
         this.rtpFaildtofindSafeLocation = this.getStringPath("General.commands.rtp.rtpFaildtofindSafeLocation");
     }
 
@@ -278,10 +280,6 @@ public class LanguageConfig extends ConfigAccessor {
 
     public String getSudoError() {
         return sudoError;
-    }
-
-    public String getWarpBadArgs() {
-        return warpBadArgs;
     }
 
     public String getTeleportedByRequestDenied() {
@@ -405,8 +403,12 @@ public class LanguageConfig extends ConfigAccessor {
         return rtpFaildtofindSafeLocation;
     }
 
-    public String getHomeDir(String homeName) {
-        return this.homeDir.replaceAll(LiteralType.HOME_NAME, homeName);
+    public String getHomeDir(Home home) {
+        return this.homeDir
+                .replaceAll(LiteralType.HOME_NAME, home.getName())
+                .replaceAll(LiteralType.X, String.valueOf((float) home.getHomeLocation().getX()))
+                .replaceAll(LiteralType.Y, String.valueOf((float) home.getHomeLocation().getY()))
+                .replaceAll(LiteralType.Z, String.valueOf((float) home.getHomeLocation().getZ()));
     }
 
     public String getYouhaveNoHomes() {

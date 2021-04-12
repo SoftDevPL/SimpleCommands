@@ -23,13 +23,13 @@ public class SetHubCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            Location hub = spawnsManager.getHub();
-            Bukkit.getPluginManager().callEvent(new PlayerSetHubEvent(player, hub, player.getLocation()));
-        } else {
+        if (!(sender instanceof Player)) {
             sender.sendMessage(languageConfig.getOnlyPlayerCanExecuteCommand());
+            return true;
         }
+        Player player = (Player) sender;
+        Location hub = spawnsManager.getHub();
+        Bukkit.getPluginManager().callEvent(new PlayerSetHubEvent(player, hub, player.getLocation()));
         return true;
     }
 }

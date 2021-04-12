@@ -28,6 +28,26 @@ public class WarpManager implements Listener {
         loadAllFromDatabase();
     }
 
+    private void loadAllFromDatabase() {
+        List<List<String>> all = database.getAllWarps();
+        for (List<String> one : all) {
+            try {
+                World world = Bukkit.getWorld(UUID.fromString(one.get(AdminGuiDatabase.WORLD_WARP_UUID)));
+                if (world == null) continue;
+                UUID warpUUID = UUID.fromString(one.get(AdminGuiDatabase.WARP_UUID));
+                String warpName = one.get(AdminGuiDatabase.WARP_NAME);
+                double x = Double.parseDouble(one.get(AdminGuiDatabase.X_WARP));
+                double y = Double.parseDouble(one.get(AdminGuiDatabase.Y_WARP));
+                double z = Double.parseDouble(one.get(AdminGuiDatabase.Z_WARP));
+                float pitch = Float.parseFloat(one.get(AdminGuiDatabase.PITCH_WARP));
+                float yaw = Float.parseFloat(one.get(AdminGuiDatabase.YAW_WARP));
+                Location loc = new Location(world, x, y, z, yaw, pitch);
+                Warp warp = new Warp(loc, warpName, warpUUID);
+                this.addWarp(warp, false);
+            } catch (Exception ignored) { }
+        }
+    }
+
     public Warp getWarpById(UUID warpUUID) {
         for (Warp warp : warpList) {
             if (warp.getWarpUUID().equals(warpUUID))
@@ -82,28 +102,6 @@ public class WarpManager implements Listener {
         event.getPlayer().teleport(event.getTo());
     }
 
-    private void loadAllFromDatabase() {
-        List<List<String>> all = database.getAllWarps();
-        for (List<String> one : all) {
-            try {
-                World world = Bukkit.getWorld(UUID.fromString(one.get(AdminGuiDatabase.WORLD_WARP_UUID)));
-                if (world == null) continue;
-                UUID warpUUID = UUID.fromString(one.get(AdminGuiDatabase.WARP_UUID));
-                String warpName = one.get(AdminGuiDatabase.WARP_NAME);
-                double x = Double.parseDouble(one.get(AdminGuiDatabase.X_WARP));
-                double y = Double.parseDouble(one.get(AdminGuiDatabase.Y_WARP));
-                double z = Double.parseDouble(one.get(AdminGuiDatabase.Z_WARP));
-                float pitch = Float.parseFloat(one.get(AdminGuiDatabase.PITCH_WARP));
-                float yaw = Float.parseFloat(one.get(AdminGuiDatabase.YAW_WARP));
-                Location loc = new Location(world, x, y, z, yaw, pitch);
-                Warp warp = new Warp(loc, warpName, warpUUID);
-                this.addWarp(warp, false);
-            } catch (Exception e) {
-                //
-            }
-
-        }
-    }
 
     private void addToDatabase(Warp warp) {
         Location loc = warp.getLocation();

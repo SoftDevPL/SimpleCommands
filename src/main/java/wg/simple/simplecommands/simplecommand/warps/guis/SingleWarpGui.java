@@ -29,7 +29,6 @@ public class SingleWarpGui extends BasicGui {
         initPassiveItems();
     }
 
-
     private void initPassiveItems() {
         if (previousGui != null) {
             this.setItem(7, 1, BasicGui.createBackItem(glc.getAdminGuiBack()),

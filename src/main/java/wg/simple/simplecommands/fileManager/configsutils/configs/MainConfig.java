@@ -17,20 +17,26 @@ public class MainConfig extends ConfigAccessor {
     private boolean plugins;
     private int teleportWaitTime;
     private int requestExpiryTime;
+    private int teleportationRadius;
 
     public void init() {
-        super.init("MainConfig");
+        super.init("Config");
+        this.teleportationRadius = getIntPath(path + "world.rtpTeleportationRadius");
         this.alwaysTeleportToHubWhenJoin = getBooleanPath(path + "world.alwaysTeleportToHubWhenJoin");
         this.teleportWhenJoinFirst = getBooleanPath(path + "world.teleportToHubIfJoinFirtTime");
         this.teleportingToHub = getBooleanPath(path + "world.teleportingToHubAfterDeath");
         this.teleportingToSpawn = getBooleanPath(path + "world.teleportingToSpawnAfterDeath");
         this.homeNormalLimit = getIntPath(path + "homes.normalHomeLimit");
         this.homePremiumLimit = getIntPath(path + "homes.premiumHomeLimit");
-        this.plugins = getBooleanPath(path + "blockMinCommands.plugins");
-        this.version = getBooleanPath(path + "blockMinCommands.version");
-        this.help = getBooleanPath(path + "blockMinCommands.help");
+        this.plugins = getBooleanPath(path + "blockedCommands.plugins");
+        this.version = getBooleanPath(path + "blockedCommands.version");
+        this.help = getBooleanPath(path + "blockedCommands.help");
         this.teleportWaitTime = getIntPath(path + "tp.teleportWaitTime");
         this.requestExpiryTime = getIntPath(path + "tp.teleportExpiryTime");
+    }
+
+    public int getTeleportationRadius() {
+        return teleportationRadius;
     }
 
     public int getTeleportWaitTime() {

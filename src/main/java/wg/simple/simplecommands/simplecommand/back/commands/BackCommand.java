@@ -11,6 +11,7 @@ import wg.simple.simplecommands.SimpleCommands;
 import wg.simple.simplecommands.fileManager.configsutils.configs.LanguageConfig;
 import wg.simple.simplecommands.simplecommand.back.events.PlayerBackEvent;
 import wg.simple.simplecommands.simplecommand.back.listeners.BackManager;
+import wg.simple.simplecommands.simplecommand.rtp.listeners.RtpManager;
 import wg.simple.simplecommands.simplecommand.tp.events.PlayerStartsTeleportEvent;
 
 

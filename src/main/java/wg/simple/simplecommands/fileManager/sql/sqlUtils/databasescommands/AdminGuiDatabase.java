@@ -119,33 +119,33 @@ public class AdminGuiDatabase extends CustomSQLInterface {
 
     public void createPrivateMessagesTable(String blockedPrivateMessagesTable, String playerWhoBlocked, String blockedPlayer) {
         String saleable = "CREATE TABLE IF NOT EXISTS " + blockedPrivateMessagesTable + " (" + playerWhoBlocked + " wibblewibble NOT NULL, " + blockedPlayer + " wibblewibble NOT NULL " + ");";
-        new TableCreatingWorker().createTable(saleable, this.databaseUrl);
+        createTable(saleable, this.databaseUrl);
     }
 
     private void createHubTable(String tableName, String worldUUID, String x, String y, String z, String pitch, String yaw) {
         String saleable = "CREATE TABLE IF NOT EXISTS " + tableName + " (" + worldUUID + " wibblewibble NOT NULL, " + x + " REAL NOT NULL, " + y
                 + " REAL NOT NULL, " + z + " REAL NOT NULL, " + pitch + " REAL NOT NULL, " + yaw + " REAL NOT NULL );";
-        new TableCreatingWorker().createTable(saleable, this.databaseUrl);
+        createTable(saleable, this.databaseUrl);
     }
 
     private void createSpawnTable(String tableName, String worldUUID, String x, String y, String z, String pitch, String yaw) {
         String saleable = "CREATE TABLE IF NOT EXISTS " + tableName + " (" + worldUUID + " wibblewibble NOT NULL, " + x + " REAL NOT NULL, " + y
                 + " REAL NOT NULL, " + z + " REAL NOT NULL, " + pitch + " REAL NOT NULL, " + yaw + " REAL NOT NULL );";
-        new TableCreatingWorker().createTable(saleable, this.databaseUrl);
+        createTable(saleable, this.databaseUrl);
     }
 
     private void createWarpTable(String tableName, String warpUUID, String warpName, String worldUUID, String x, String y, String z, String pitch, String yaw) {
         String saleable = "CREATE TABLE IF NOT EXISTS " + tableName + " (" + warpUUID + " wibblewibble NOT NULL, " + warpName + " TEXT NOT NULL, " + worldUUID
                 + " wibblewibble NOT NULL, " + x + " REAL NOT NULL, " + y
                 + " REAL NOT NULL, " + z + " REAL NOT NULL, " + pitch + " REAL NOT NULL, " + yaw + " REAL NOT NULL );";
-        new TableCreatingWorker().createTable(saleable, this.databaseUrl);
+        createTable(saleable, this.databaseUrl);
     }
 
     private void createBackTable(String tableName, String playerUUID, String worldUUID, String x, String y, String z, String pitch, String yaw) {
         String saleable = "CREATE TABLE IF NOT EXISTS " + tableName + " (" + playerUUID + " wibblewibble NOT NULL, " + worldUUID
                 + " wibblewibble NOT NULL, " + x + " REAL NOT NULL, " + y
                 + " REAL NOT NULL, " + z + " REAL NOT NULL, " + pitch + " REAL NOT NULL, " + yaw + " REAL NOT NULL );";
-        new TableCreatingWorker().createTable(saleable, this.databaseUrl);
+        createTable(saleable, this.databaseUrl);
     }
 
     private void createHomesTables(String tableName, String playerUUID, String homeUUID, String worldUUID, String homeName, String x, String y, String z, String pitch, String yaw) {
@@ -153,12 +153,12 @@ public class AdminGuiDatabase extends CustomSQLInterface {
                 + homeUUID + " wibblewibble NOT NULL, " + worldUUID
                 + " wibblewibble NOT NULL, " + homeName + " TEXT NOT NULL, " + x + " REAL NOT NULL, " + y
                 + " REAL NOT NULL, " + z + " REAL NOT NULL, " + pitch + " REAL NOT NULL, " + yaw + " REAL NOT NULL );";
-        new TableCreatingWorker().createTable(saleable, this.databaseUrl);
+        createTable(saleable, this.databaseUrl);
     }
 
     public void insertIntoBlockedMessagesTable(UUID playerWhoBlocked, UUID blockedPlayer) {
         String sql = "INSERT INTO  " + blockedPrivateMessagesTable + " (" + this.playerWhoBlocked + ", " + this.blockedPlayer + ") VALUES(?,?)";
-        new InsertingWorker().insertSomething(pstmt -> {
+        insertSomething(pstmt -> {
             pstmt.setString(1, playerWhoBlocked.toString());
             pstmt.setString(2, blockedPlayer.toString());
         }, sql);
@@ -166,7 +166,7 @@ public class AdminGuiDatabase extends CustomSQLInterface {
 
     public void insertIntoHubTable(String worldUUID, double x, double y, double z, float pitch, float yaw) {
         String sql = "INSERT INTO " + hubTable + " (" + this.worldUUID + ", " + this.x + ", " + this.y + ", " + this.z + ", " + this.pitch + ", " + this.yaw + ") VALUES(?,?,?,?,?,?)";
-        new InsertingWorker().insertSomething(pstmt -> {
+        insertSomething(pstmt -> {
             pstmt.setString(1, worldUUID);
             pstmt.setDouble(2, x);
             pstmt.setDouble(3, y);
@@ -178,7 +178,7 @@ public class AdminGuiDatabase extends CustomSQLInterface {
 
     public void insertIntoSpawnsTable(String worldUUID, double x, double y, double z, float pitch, float yaw) {
         String sql = "INSERT INTO " + spawnsTable + " (" + this.worldUUID + ", " + this.x + ", " + this.y + ", " + this.z + ", " + this.pitch + ", " + this.yaw + ") VALUES(?,?,?,?,?,?)";
-        new InsertingWorker().insertSomething(pstmt -> {
+        insertSomething(pstmt -> {
             pstmt.setString(1, worldUUID);
             pstmt.setDouble(2, x);
             pstmt.setDouble(3, y);
@@ -190,7 +190,7 @@ public class AdminGuiDatabase extends CustomSQLInterface {
 
     public void insertIntoWarpsTable(String warpUUID, String warpName, String worldUUID, double x, double y, double z, float pitch, float yaw) {
         String sql = "INSERT INTO " + playersWarpTable + " (" + this.warpUUID + ", " + this.warpName + ", " + this.worldUUID + ", " + this.x + ", " + this.y + ", " + this.z + ", " + this.pitch + ", " + this.yaw + ") VALUES(?,?,?,?,?,?,?,?)";
-        new InsertingWorker().insertSomething(pstmt -> {
+        insertSomething(pstmt -> {
             pstmt.setString(1, warpUUID);
             pstmt.setString(2, warpName);
             pstmt.setString(3, worldUUID);
@@ -204,7 +204,7 @@ public class AdminGuiDatabase extends CustomSQLInterface {
 
     public void insertIntoBackTable(String playerUUID, String worldUUID, double x, double y, double z, float pitch, float yaw) {
         String sql = "INSERT INTO " + playerBackTable + " (" + this.playerUUID + ", " + this.worldUUID + ", " + this.x + ", " + this.y + ", " + this.z + ", " + this.pitch + ", " + this.yaw + ") VALUES(?,?,?,?,?,?,?)";
-        new InsertingWorker().insertSomething(pstmt -> {
+        insertSomething(pstmt -> {
             pstmt.setString(1, playerUUID);
             pstmt.setString(2, worldUUID);
             pstmt.setDouble(3, x);
@@ -217,7 +217,7 @@ public class AdminGuiDatabase extends CustomSQLInterface {
 
     public void insertIntoHomesTable(String playerUUID, String homeUUID, String worldUUID, String homeName, double x, double y, double z, float pitch, float yaw) {
         String sql = "INSERT INTO " + this.homesTable + " (" + this.playerUUID + ", " + this.homeUUID + ", " + this.worldUUID + ", " + this.homeName + ", " + this.x + ", " + this.y + ", " + this.z + ", " + this.pitch + ", " + this.yaw + ") VALUES(?,?,?,?,?,?,?,?,?)";
-        new InsertingWorker().insertSomething(pstmt -> {
+        insertSomething(pstmt -> {
             pstmt.setString(1, playerUUID);
             pstmt.setString(2, homeUUID);
             pstmt.setString(3, worldUUID);
@@ -345,51 +345,71 @@ public class AdminGuiDatabase extends CustomSQLInterface {
 
     public void deleteBlockedPlayer(UUID blockedPlayer) {
         String sql = "DELETE FROM " + this.blockedPrivateMessagesTable + " WHERE " + this.blockedPlayer + " = " + "\"" + blockedPlayer.toString() + "\"";
-        new DeletingWorker().delete(sql);
+        delete(sql);
     }
 
     public void deleteHub() {
         String sql = "DELETE FROM " + this.hubTable;
-        new DeletingWorker().delete(sql);
+        delete(sql);
     }
 
     public void deleteSpawn(String spawnUUID) {
         String sql = "DELETE FROM " + this.spawnsTable + " WHERE " + this.worldUUID + " = " + "\"" + spawnUUID + "\"";
-        new DeletingWorker().delete(sql);
+        delete(sql);
     }
 
     public void deleteWarp(String warpUUID) {
         String sql = "DELETE FROM " + this.playersWarpTable + " WHERE " + this.warpUUID + " = " + "\"" + warpUUID + "\"";
-        new DeletingWorker().delete(sql);
+        delete(sql);
     }
 
     public void deleteBack(String playerUUID) {
         String sql = "DELETE FROM " + this.playerBackTable + " WHERE " + this.playerUUID + " = " + "\"" + playerUUID + "\"";
-        new DeletingWorker().delete(sql);
+        delete(sql);
     }
 
     public void deleteHome(String homeUUID) {
         String sql = "DELETE FROM " + this.homesTable + " WHERE " + this.homeUUID + " = " + "\"" + homeUUID + "\"";
-        new DeletingWorker().delete(sql);
+        delete(sql);
     }
+
+    public void delete(String query) {
+        try (Connection conn = AdminGuiDatabase.this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void insertSomething(DatabaseInsertion operation, String query) {
+        try (Connection conn = AdminGuiDatabase.this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            operation.insert(pstmt);
+            pstmt.executeUpdate();
+            close(pstmt);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void createTable(String query, String databaseUrl) {
+        try (Connection conn = DriverManager.getConnection(databaseUrl);
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(query);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
     public interface DatabaseOperation<T> {
         T operate(ResultSet rs) throws SQLException;
     }
 
+
     public interface DatabaseInsertion<T> {
         void insert(PreparedStatement pstmt) throws SQLException;
-    }
-
-    public class DeletingWorker {
-        public void delete(String query) {
-            try (Connection conn = AdminGuiDatabase.this.connect();
-                 PreparedStatement pstmt = conn.prepareStatement(query)) {
-                pstmt.executeUpdate();
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
     }
 
     public class Worker<T> {
@@ -407,27 +427,4 @@ public class AdminGuiDatabase extends CustomSQLInterface {
         }
     }
 
-    public class InsertingWorker {
-        public void insertSomething(DatabaseInsertion operation, String query) {
-            try (Connection conn = AdminGuiDatabase.this.connect();
-                 PreparedStatement pstmt = conn.prepareStatement(query)) {
-                operation.insert(pstmt);
-                pstmt.executeUpdate();
-                close(pstmt);
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    public class TableCreatingWorker {
-        public void createTable(String query, String databaseUrl) {
-            try (Connection conn = DriverManager.getConnection(databaseUrl);
-                 Statement stmt = conn.createStatement()) {
-                stmt.execute(query);
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
 }

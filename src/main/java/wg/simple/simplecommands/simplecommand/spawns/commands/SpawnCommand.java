@@ -23,21 +23,21 @@ public class SpawnCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            Location spawn = spawnsManager.getSpawn(player.getLocation().getWorld().getUID());
-            if (spawn == null) {
-                player.sendMessage(languageConfig.getSpawnNotExists());
-                return true;
-            }
-            Bukkit.getPluginManager().callEvent(new PlayerStartsTeleportEvent(player,
-                    () -> {
-                        Bukkit.getPluginManager().callEvent(new PlayerTeleportSpawnEvent(player, player.getLocation(), spawn));
-                        player.sendMessage(languageConfig.getSuccessfullyTeleport());
-                    }));
-        } else {
+        if (!(sender instanceof Player)) {
             sender.sendMessage(languageConfig.getOnlyPlayerCanExecuteCommand());
+            return true;
         }
+        Player player = (Player) sender;
+        Location spawn = spawnsManager.getSpawn(player.getLocation().getWorld().getUID());
+        if (spawn == null) {
+            player.sendMessage(languageConfig.getSpawnNotExists());
+            return true;
+        }
+        Bukkit.getPluginManager().callEvent(new PlayerStartsTeleportEvent(player,
+                () -> {
+                    Bukkit.getPluginManager().callEvent(new PlayerTeleportSpawnEvent(player, player.getLocation(), spawn));
+                    player.sendMessage(languageConfig.getSuccessfullyTeleport());
+                }));
         return true;
     }
 }

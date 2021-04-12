@@ -29,7 +29,7 @@ public class GuiLanguageConfig extends ConfigAccessor {
     private String adminGuiClose;
 
     public void init() {
-        super.init("GuiLanguageConfig");
+        super.init("GuiLocale_en");
         this.warpsGuiItemName = this.getStringPath("Guis.adminGui.warpsGui.itemName");
         this.warpsGuiPageName = this.getStringPath("Guis.adminGui.warpsGui.pageName");
         this.singleWarpGuiWarpNameItem = this.getStringPath("Guis.adminGui.singleWarpGui.warpNameItem");

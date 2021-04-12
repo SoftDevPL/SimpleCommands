@@ -25,8 +25,7 @@ public class RemoveWarpCommand extends WarpTabCompleter implements CommandExecut
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length >= 1) {
-            String warpName = args[0];
-            Warp warpToRemove = warpManager.getWarpByName(warpName);
+            Warp warpToRemove = warpManager.getWarpByName(args[0]);
             if (warpToRemove == null) {
                 sender.sendMessage(languageConfig.getWarpNotExists());
                 return true;

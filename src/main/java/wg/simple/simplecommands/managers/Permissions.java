@@ -8,4 +8,5 @@ public class Permissions {
     public final Permission unlimitedHomeCountPerm = new Permission("watchTowerGui.utilities.unlimitedHomeCountPerm");
     public final Permission skipTeleportTime = new Permission("watchTowerGui.utilities.skipTeleportTime");
     public final Permission seePrivateChat = new Permission("watchTowerGui.utilities.seePrivateChat");
+    public final Permission helpPermission = new Permission("simpleCommands.commands.help");
 }

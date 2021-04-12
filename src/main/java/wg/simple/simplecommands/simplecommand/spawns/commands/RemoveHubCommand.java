@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import wg.simple.simplecommands.SimpleCommands;
 import wg.simple.simplecommands.fileManager.configsutils.configs.LanguageConfig;
 import wg.simple.simplecommands.simplecommand.spawns.events.RemoveHubEvent;
@@ -21,6 +22,10 @@ public class RemoveHubCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(languageConfig.getOnlyPlayerCanExecuteCommand());
+            return true;
+        }
         Location hub = spawnsManager.getHub();
         if (hub == null) {
             sender.sendMessage(languageConfig.getHubNotExists());

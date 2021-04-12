@@ -293,7 +293,6 @@ public class BasicGui {
         return phrase + colorChar + newColor;
     }
 
-    //first fixed phare, second - changedFormatting
     private static String[] fixFormatting(String phrase, String formatting, char colorChar) {
         StringBuilder formattingBuilder = new StringBuilder(formatting);
 

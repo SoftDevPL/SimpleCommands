@@ -26,24 +26,22 @@ public class WarpCommand extends WarpTabCompleter implements CommandExecutor, Li
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (args.length >= 1) {
-                String warpName = args[0];
-                Warp warpToTeleport = warpManager.getWarpByName(warpName);
-                if (warpToTeleport == null) {
-                    player.sendMessage(languageConfig.getWarpNotExists());
-                    return true;
-                }
-                Bukkit.getPluginManager().callEvent(new PlayerStartsTeleportEvent(player, () -> Bukkit.getPluginManager().callEvent(
-                        new PlayerWarpEvent(player, player.getLocation(), warpToTeleport.getLocation(), warpToTeleport))));
-            } else {
-                player.sendMessage(languageConfig.getWarpBadArgs());
-                sender.sendMessage(CommandsManager.getDescription(label, command));
-            }
-        } else {
+        if (!(sender instanceof Player)) {
             sender.sendMessage(languageConfig.getOnlyPlayerCanExecuteCommand());
+            return true;
         }
+        Player player = (Player) sender;
+        if (args.length >= 1) {
+            Warp warpToTeleport = warpManager.getWarpByName(args[0]);
+            if (warpToTeleport == null) {
+                player.sendMessage(languageConfig.getWarpNotExists());
+                return true;
+            }
+            Bukkit.getPluginManager().callEvent(new PlayerStartsTeleportEvent(player, () -> Bukkit.getPluginManager().callEvent(
+                    new PlayerWarpEvent(player, player.getLocation(), warpToTeleport.getLocation(), warpToTeleport))));
+            return true;
+        }
+        sender.sendMessage(CommandsManager.getDescription(label, command));
         return true;
     }
 

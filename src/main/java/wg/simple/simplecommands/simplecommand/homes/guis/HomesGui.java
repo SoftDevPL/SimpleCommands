@@ -20,7 +20,6 @@ public class HomesGui extends ListGui<Home> {
 
     private final HomeManager homeManager;
     private final GuiLanguageConfig glc;
-
     @Setter
     @Getter
     private UUID playerUUID;

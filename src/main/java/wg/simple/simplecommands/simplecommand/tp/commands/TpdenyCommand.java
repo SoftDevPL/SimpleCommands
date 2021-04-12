@@ -26,18 +26,18 @@ public class TpdenyCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            Map<UUID, TeleportRequest> actualRequests = tpaManager.getAllRequests();
-            if (!actualRequests.containsKey(player.getUniqueId())) {
-                player.sendMessage(languageConfig.getNoRequests());
-                return true;
-            }
-            Player playerToTeleport = actualRequests.get(player.getUniqueId()).getSender();
-            Bukkit.getServer().getPluginManager().callEvent(new TpDenyEvent(playerToTeleport, player));
-        } else {
+        if (!(sender instanceof Player)) {
             sender.sendMessage(languageConfig.getOnlyPlayerCanExecuteCommand());
+            return true;
         }
+        Player player = (Player) sender;
+        Map<UUID, TeleportRequest> actualRequests = tpaManager.getAllRequests();
+        if (!actualRequests.containsKey(player.getUniqueId())) {
+            player.sendMessage(languageConfig.getNoRequests());
+            return true;
+        }
+        Player playerToTeleport = actualRequests.get(player.getUniqueId()).getSender();
+        Bukkit.getServer().getPluginManager().callEvent(new TpDenyEvent(playerToTeleport, player));
         return true;
     }
 }

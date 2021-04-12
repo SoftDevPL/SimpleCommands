@@ -34,7 +34,16 @@
 #    ==> EXAMPLE => %S10 %Mi0 %H0 %D0 %W0 %Mo0 %Y0 ==> ban time = 10 seconds
 # <=======[About]=======>
 Configurations:
+  blockedCommands:
+    #Here you can disable /plugins, /pl commands
+    plugins: true
+    #Here you can disable /version, /ver commands
+    version: true
+    #Here you can disable /help, /? commands
+    help: true
   world:
+    # Here you can specify rtp teleportation radius
+    rtpTeleportationRadius: 100000
     # Here you can specify if you want to teleport player to hub after death
     teleportingToHubAfterDeath: false
     # Here you can specify if you want to teleport player to world spawn after death
@@ -47,7 +56,7 @@ Configurations:
     # Here you can specify a basic count of homes
     normalHomeLimit: 3
     # Here you can specify a premium count of homes
-    premiumHomeLimit: 5
+    premiumHomeLimit: 10
   tp:
     # All bottom values are in minecraft ticks: 20 ticks = 1 seconds
     # Time player has to wait without moving before teleport through /tp, /home, /warp etc.
