@@ -1,8 +1,12 @@
 package wg.simple.simplecommands.fileManager.sql.sqlUtils.databasescommands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import wg.simple.simplecommands.fileManager.sql.sqlUtils.CustomSQLInterface;
+import wg.simple.simplecommands.simplecommand.homes.Home;
 import wg.simple.simplecommands.simplecommand.msg.listeners.PrivateMessageRequest;
+import wg.simple.simplecommands.simplecommand.warps.Warp;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -283,20 +287,24 @@ public class AdminGuiDatabase extends CustomSQLInterface {
         }, sql);
     }
 
-    public List<List<String>> getAllWarps() {
+    public List<Warp> getAllWarps() {
         String sql = "SELECT * FROM " + this.playersWarpTable;
-        return new Worker<List<List<String>>>().getSomething(rs -> {
-            List<List<String>> warpList = new ArrayList<>();
+        return new Worker<List<Warp>>().getSomething(rs -> {
+            List<Warp> warpList = new ArrayList<>();
             while (rs.next()) {
-                List<String> warp = new ArrayList<>();
-                warp.add(WARP_UUID, rs.getString(this.warpUUID));
-                warp.add(WARP_NAME, rs.getString(this.warpName));
-                warp.add(WORLD_WARP_UUID, rs.getString(this.worldUUID));
-                warp.add(X_WARP, rs.getString(this.x));
-                warp.add(Y_WARP, rs.getString(this.y));
-                warp.add(Z_WARP, rs.getString(this.z));
-                warp.add(PITCH_WARP, rs.getString(this.pitch));
-                warp.add(YAW_WARP, rs.getString(this.yaw));
+                World world = Bukkit.getServer().getWorld(UUID.fromString(rs.getString(this.worldUUID)));
+                Location location = new Location(
+                        world,
+                        rs.getDouble(this.x),
+                        rs.getDouble(this.y),
+                        rs.getDouble(this.z),
+                        rs.getFloat(this.yaw),
+                        rs.getFloat(this.pitch));
+                Warp warp = new Warp(
+                        location,
+                        rs.getString(this.warpName),
+                        UUID.fromString(rs.getString(this.warpUUID))
+                );
                 warpList.add(warp);
             }
             return warpList;
@@ -322,26 +330,52 @@ public class AdminGuiDatabase extends CustomSQLInterface {
         }, sql);
     }
 
-    public List<List<String>> getAllHomes() {
+    public List<Home> getAllHomes() {
         String sql = "SELECT * FROM " + this.homesTable;
-        return new Worker<List<List<String>>>().getSomething(rs -> {
-            List<List<String>> playerHomes = new ArrayList<>();
+        return new Worker<List<Home>>().getSomething(rs -> {
+            List<Home> playerHomes = new ArrayList<>();
             while (rs.next()) {
-                List<String> home = new ArrayList<>();
-                home.add(PLAYER_HOME_UUID, rs.getString(this.playerUUID));
-                home.add(HOME_UUID, rs.getString(this.homeUUID));
-                home.add(WORLD_HOME_UUID, rs.getString(this.worldUUID));
-                home.add(HOME_NAME, rs.getString(this.homeName));
-                home.add(X, rs.getString(this.x));
-                home.add(Y, rs.getString(this.y));
-                home.add(Z, rs.getString(this.z));
-                home.add(PITCH, rs.getString(this.pitch));
-                home.add(YAW, rs.getString(this.yaw));
+                World world = Bukkit.getServer().getWorld(UUID.fromString(rs.getString(this.worldUUID)));
+                Location homeLocation = new Location(
+                        world,
+                        rs.getDouble(this.x),
+                        rs.getDouble(this.y),
+                        rs.getDouble(this.z),
+                        rs.getFloat(this.yaw),
+                        rs.getFloat(this.pitch));
+               Home home = new Home(
+                       UUID.fromString(rs.getString(this.playerUUID)),
+                       homeLocation,
+                       rs.getString(this.homeName),
+                       UUID.fromString(rs.getString(this.homeUUID))
+
+               );
                 playerHomes.add(home);
             }
             return playerHomes;
         }, sql);
     }
+
+//    public List<List<String>> getAllHomes() {
+//        String sql = "SELECT * FROM " + this.homesTable;
+//        return new Worker<List<List<String>>>().getSomething(rs -> {
+//            List<List<String>> playerHomes = new ArrayList<>();
+//            while (rs.next()) {
+//                List<String> home = new ArrayList<>();
+//                home.add(PLAYER_HOME_UUID, rs.getString(this.playerUUID));
+//                home.add(HOME_UUID, rs.getString(this.homeUUID));
+//                home.add(WORLD_HOME_UUID, rs.getString(this.worldUUID));
+//                home.add(HOME_NAME, rs.getString(this.homeName));
+//                home.add(X, rs.getString(this.x));
+//                home.add(Y, rs.getString(this.y));
+//                home.add(Z, rs.getString(this.z));
+//                home.add(PITCH, rs.getString(this.pitch));
+//                home.add(YAW, rs.getString(this.yaw));
+//                playerHomes.add(home);
+//            }
+//            return playerHomes;
+//        }, sql);
+//    }
 
     public void deleteBlockedPlayer(UUID blockedPlayer) {
         String sql = "DELETE FROM " + this.blockedPrivateMessagesTable + " WHERE " + this.blockedPlayer + " = " + "\"" + blockedPlayer.toString() + "\"";

@@ -1,8 +1,6 @@
 package wg.simple.simplecommands.simplecommand.homes.listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -34,8 +32,15 @@ public class HomeManager implements Listener {
         this.normalHomeLimit = plugin.configsManager.mainConfig.getHomeNormalLimit();
         this.premiumHomeLimit = plugin.configsManager.mainConfig.getHomePremiumLimit();
         languageConfig = plugin.configsManager.languageConfig;
-        loadFromDatabase();
-    }
+
+        for (Home home : this.database.getAllHomes()) {
+            if (home.getHomeLocation().getWorld() == null) {
+                this.database.deleteWarp(home.getHomeUUID().toString());
+            } else {
+                this.addHome(home);
+            }
+        }
+}
 
     public boolean isHomeRegister(Home home) {
         return homeMap.containsValue(home);
@@ -135,22 +140,6 @@ public class HomeManager implements Listener {
         event.getPlayer().teleport(event.getHome().getHomeLocation());
     }
 
-    public void loadFromDatabase() {
-        List<List<String>> all = database.getAllHomes();
-        for (List<String> homeList : all) {
-            UUID playerUUID = UUID.fromString(homeList.get(AdminGuiDatabase.PLAYER_HOME_UUID));
-            String homeName = homeList.get(AdminGuiDatabase.HOME_NAME);
-            World world = Bukkit.getWorld(UUID.fromString(homeList.get(AdminGuiDatabase.WORLD_HOME_UUID)));
-            double x = Double.parseDouble(homeList.get(AdminGuiDatabase.X));
-            double y = Double.parseDouble(homeList.get(AdminGuiDatabase.Y));
-            double z = Double.parseDouble(homeList.get(AdminGuiDatabase.Z));
-            float pitch = Float.parseFloat(homeList.get(AdminGuiDatabase.PITCH));
-            float yaw = Float.parseFloat(homeList.get(AdminGuiDatabase.YAW));
-            UUID homeUUID = UUID.fromString(homeList.get(AdminGuiDatabase.HOME_UUID));
-            Home home = new Home(playerUUID, new Location(world, x, y, z, yaw, pitch), homeName, homeUUID);
-            this.addHome(home);
-        }
-    }
 
     public void saveToDatabase(Home home) {
         Location loc = home.getHomeLocation();
