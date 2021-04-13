@@ -1,6 +1,8 @@
 package wg.simple.simplecommands.simplecommand.warps.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -14,6 +16,7 @@ import wg.simple.simplecommands.simplecommand.warps.events.RemoveWarpEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class WarpManager implements Listener {
     private List<Warp> warpList = new ArrayList<>();
@@ -23,18 +26,19 @@ public class WarpManager implements Listener {
         SimpleCommands plugin = SimpleCommands.getInstance();
         this.database = plugin.SQLmanager.database;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        deleteNotExistingWarps();
+        deleteAllNotExistingWorlds();
+        warpList = database.getAllWarps();
     }
 
-    private void deleteNotExistingWarps() {
-        warpList = database.getAllWarps();
-        for (Warp warp : warpList) {
-            if (warp.getLocation().getWorld() == null) {
-                this.database.deleteWarp(warp.getWarpUUID().toString());
-            }
+    private List<UUID> returnRetailedList(List<UUID> mainList, List<UUID> listToRetail) {
+        return listToRetail.stream().filter(item -> !mainList.contains(item)).collect(Collectors.toList());
+    }
+
+    private void deleteAllNotExistingWorlds() {
+        List<UUID> warpsWorldsUUIDS = database.getAllWarps().stream().map(item -> item.getLocation().getWorld().getUID()).collect(Collectors.toList());
+        for (UUID uuid : returnRetailedList(Bukkit.getWorlds().stream().map(World::getUID).collect(Collectors.toList()), warpsWorldsUUIDS)) {
+            this.database.deleteWarpByWorldUUID(uuid.toString());
         }
-        warpList.clear();
-        warpList = database.getAllWarps();
     }
 
     public Warp getWarpById(UUID warpUUID) {

@@ -9,66 +9,10 @@ import wg.simple.simplecommands.simplecommand.msg.listeners.PrivateMessageReques
 import wg.simple.simplecommands.simplecommand.warps.Warp;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class AdminGuiDatabase extends CustomSQLInterface {
 
-    /**
-     * Warpy
-     */
-    public static final Integer WARP_UUID = 0;
-    /**
-     * backs
-     */
-    public static final Integer PLAYER_UUID_BACK = 0;
-    public static final Integer WORLD_BACK_UUID = 1;
-    public static final Integer X_BACK = 2;
-    public static final Integer Y_BACK = 3;
-    public static final Integer Z_BACK = 4;
-    public static final Integer PITCH_BACK = 5;
-    public static final Integer YAW_BACK = 6;
-    /**
-     * Homes
-     */
-    public static final Integer PLAYER_HOME_UUID = 0;
-    public static final Integer HOME_UUID = 1;
-    public static final Integer WORLD_HOME_UUID = 2;
-    public static final Integer HOME_NAME = 3;
-    public static final Integer X = 4;
-    public static final Integer Y = 5;
-    public static final Integer Z = 6;
-    public static final Integer PITCH = 7;
-    public static final Integer YAW = 8;
-    public static final Integer WARP_NAME = 1;
-    public static final Integer WORLD_WARP_UUID = 2;
-    public static final Integer X_WARP = 3;
-    public static final Integer Y_WARP = 4;
-    public static final Integer Z_WARP = 5;
-    public static final Integer PITCH_WARP = 6;
-    public static final Integer YAW_WARP = 7;
-    /**
-     * spawn
-     */
-    public static final Integer WORLD_SPAWN_UUID = 0;
-    public static final Integer X_SPAWN = 1;
-    public static final Integer Y_SPAWN = 2;
-    public static final Integer Z_SPAWN = 3;
-    public static final Integer PITCH_SPAWN = 4;
-    public static final Integer YAW_SPAWN = 5;
-    /**
-     * hub
-     */
-    public static final Integer WORLD_HUB_UUID = 0;
-    public static final Integer X_HUB = 1;
-    public static final Integer Y_HUB = 2;
-    public static final Integer Z_HUB = 3;
-    public static final Integer PITCH_HUB = 4;
-    public static final Integer YAW_HUB = 5;
-    /**
-     * Warps
-     */
     private final String playerBackTable = "playersBack";
     private final String playersWarpTable = "warps";
     /**
@@ -253,37 +197,41 @@ public class AdminGuiDatabase extends CustomSQLInterface {
                 }, sql);
     }
 
-    public List<String> getHub() {
+    public List<Location> getHub() {
         String sql = "SELECT * FROM " + hubTable;
-        return new Worker<List<String>>().getSomething(rs -> {
-            List<String> hub = new ArrayList<>();
+        return new Worker<List<Location>>().getSomething(rs -> {
+           List<Location> locations = new ArrayList<>();
             while (rs.next()) {
-                hub.add(WORLD_HUB_UUID, rs.getString(this.worldUUID));
-                hub.add(X_HUB, rs.getString(this.x));
-                hub.add(Y_HUB, rs.getString(this.y));
-                hub.add(Z_HUB, rs.getString(this.z));
-                hub.add(PITCH_HUB, rs.getString(this.pitch));
-                hub.add(YAW_HUB, rs.getString(this.yaw));
+                World world = Bukkit.getServer().getWorld(UUID.fromString(rs.getString(this.worldUUID)));
+                Location location = new Location(
+                        world,
+                        rs.getDouble(this.x),
+                        rs.getDouble(this.y),
+                        rs.getDouble(this.z),
+                        rs.getFloat(this.yaw),
+                        rs.getFloat(this.pitch));
+                locations.add(location);
             }
-            return hub;
+            return locations;
         }, sql);
     }
 
-    public List<List<String>> getAllSpawns() {
-        String sql = "SELECT * FROM " + this.spawnsTable;
-        return new Worker<List<List<String>>>().getSomething(rs -> {
-            List<List<String>> spawnsTable = new ArrayList<>();
+    public List<Location> getSpawns() {
+        String sql = "SELECT * FROM " + spawnsTable;
+        return new Worker<List<Location>>().getSomething(rs -> {
+            List<Location> locations = new ArrayList<>();
             while (rs.next()) {
-                List<String> spawn = new ArrayList<>();
-                spawn.add(WORLD_SPAWN_UUID, rs.getString(this.worldUUID));
-                spawn.add(X_SPAWN, rs.getString(this.x));
-                spawn.add(Y_SPAWN, rs.getString(this.y));
-                spawn.add(Z_SPAWN, rs.getString(this.z));
-                spawn.add(PITCH_SPAWN, rs.getString(this.pitch));
-                spawn.add(YAW_SPAWN, rs.getString(this.yaw));
-                spawnsTable.add(spawn);
+                World world = Bukkit.getServer().getWorld(UUID.fromString(rs.getString(this.worldUUID)));
+                Location location = new Location(
+                        world,
+                        rs.getDouble(this.x),
+                        rs.getDouble(this.y),
+                        rs.getDouble(this.z),
+                        rs.getFloat(this.yaw),
+                        rs.getFloat(this.pitch));
+                locations.add(location);
             }
-            return spawnsTable;
+            return locations;
         }, sql);
     }
 
@@ -311,20 +259,20 @@ public class AdminGuiDatabase extends CustomSQLInterface {
         }, sql);
     }
 
-    public List<List<String>> getAllBacks() {
+    public Map<UUID, Location> getAllBacks() {
         String sql = "SELECT * FROM " + this.playerBackTable;
-        return new Worker<List<List<String>>>().getSomething(rs -> {
-            List<List<String>> playerBacks = new ArrayList<>();
+        return new Worker<Map<UUID, Location>>().getSomething(rs -> {
+            Map<UUID, Location> playerBacks = new HashMap<>();
             while (rs.next()) {
-                List<String> back = new ArrayList<>();
-                back.add(PLAYER_UUID_BACK, rs.getString(this.playerUUID));
-                back.add(WORLD_BACK_UUID, rs.getString(this.worldUUID));
-                back.add(X_BACK, rs.getString(this.x));
-                back.add(Y_BACK, rs.getString(this.y));
-                back.add(Z_BACK, rs.getString(this.z));
-                back.add(PITCH_BACK, rs.getString(this.pitch));
-                back.add(YAW_BACK, rs.getString(this.yaw));
-                playerBacks.add(back);
+                World world = Bukkit.getServer().getWorld(UUID.fromString(rs.getString(this.worldUUID)));
+                Location location = new Location(
+                        world,
+                        rs.getDouble(this.x),
+                        rs.getDouble(this.y),
+                        rs.getDouble(this.z),
+                        rs.getFloat(this.yaw),
+                        rs.getFloat(this.pitch));
+                playerBacks.put(UUID.fromString(rs.getString(this.playerUUID)), location);
             }
             return playerBacks;
         }, sql);
@@ -356,27 +304,6 @@ public class AdminGuiDatabase extends CustomSQLInterface {
         }, sql);
     }
 
-//    public List<List<String>> getAllHomes() {
-//        String sql = "SELECT * FROM " + this.homesTable;
-//        return new Worker<List<List<String>>>().getSomething(rs -> {
-//            List<List<String>> playerHomes = new ArrayList<>();
-//            while (rs.next()) {
-//                List<String> home = new ArrayList<>();
-//                home.add(PLAYER_HOME_UUID, rs.getString(this.playerUUID));
-//                home.add(HOME_UUID, rs.getString(this.homeUUID));
-//                home.add(WORLD_HOME_UUID, rs.getString(this.worldUUID));
-//                home.add(HOME_NAME, rs.getString(this.homeName));
-//                home.add(X, rs.getString(this.x));
-//                home.add(Y, rs.getString(this.y));
-//                home.add(Z, rs.getString(this.z));
-//                home.add(PITCH, rs.getString(this.pitch));
-//                home.add(YAW, rs.getString(this.yaw));
-//                playerHomes.add(home);
-//            }
-//            return playerHomes;
-//        }, sql);
-//    }
-
     public void deleteBlockedPlayer(UUID blockedPlayer) {
         String sql = "DELETE FROM " + this.blockedPrivateMessagesTable + " WHERE " + this.blockedPlayer + " = " + "\"" + blockedPlayer.toString() + "\"";
         delete(sql);
@@ -392,8 +319,19 @@ public class AdminGuiDatabase extends CustomSQLInterface {
         delete(sql);
     }
 
+    public void deleteSpawnByWorldUUID(String worldUUID) {
+        String sql = "DELETE FROM " + this.spawnsTable + " WHERE " + this.worldUUID + " = " + "\"" + worldUUID + "\"";
+        delete(sql);
+    }
+
+
     public void deleteWarp(String warpUUID) {
         String sql = "DELETE FROM " + this.playersWarpTable + " WHERE " + this.warpUUID + " = " + "\"" + warpUUID + "\"";
+        delete(sql);
+    }
+
+    public void deleteWarpByWorldUUID(String worldUUID) {
+        String sql = "DELETE FROM " + this.playersWarpTable + " WHERE " + this.worldUUID + " = " + "\"" + worldUUID + "\"";
         delete(sql);
     }
 
@@ -402,8 +340,23 @@ public class AdminGuiDatabase extends CustomSQLInterface {
         delete(sql);
     }
 
+    public void deleteBackByWorldUUID(String worldUUID) {
+        String sql = "DELETE FROM " + this.playerBackTable + " WHERE " + this.worldUUID + " = " + "\"" + worldUUID + "\"";
+        delete(sql);
+    }
+
     public void deleteHome(String homeUUID) {
         String sql = "DELETE FROM " + this.homesTable + " WHERE " + this.homeUUID + " = " + "\"" + homeUUID + "\"";
+        delete(sql);
+    }
+
+    public void deleteHomeByWorldUUID(String worldUUID) {
+        String sql = "DELETE FROM " + this.homesTable + " WHERE " + this.worldUUID + " = " + "\"" + worldUUID + "\"";
+        delete(sql);
+    }
+
+    public void deleteHubByWorldUUID(String worldUUID) {
+        String sql = "DELETE FROM " + this.hubTable + " WHERE " + this.worldUUID + " = " + "\"" + worldUUID + "\"";
         delete(sql);
     }
 

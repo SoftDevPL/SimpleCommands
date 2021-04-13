@@ -2,7 +2,7 @@ name: SimpleCommands
 version: ${project.version}
 main: wg.simple.simplecommands.SimpleCommands
 authors: [ Devie, DJKK12 ]
-softdepend: [ Multiverse-core ]
+softdepend: [ Multiverse-Core ]
 description: Simple essentials plugin
 commands:
   unblockmsg:

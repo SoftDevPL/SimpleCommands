@@ -1,6 +1,8 @@
 package wg.simple.simplecommands.simplecommand.homes.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,6 +17,7 @@ import wg.simple.simplecommands.simplecommand.homes.events.PlayerSetHomeEvent;
 import wg.simple.simplecommands.simplecommand.homes.events.PlayerTeleportsToHomeEvent;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class HomeManager implements Listener {
     private final Map<UUID, List<Home>> homeMap = new HashMap<>();
@@ -32,15 +35,22 @@ public class HomeManager implements Listener {
         this.normalHomeLimit = plugin.configsManager.mainConfig.getHomeNormalLimit();
         this.premiumHomeLimit = plugin.configsManager.mainConfig.getHomePremiumLimit();
         languageConfig = plugin.configsManager.languageConfig;
-
+        deleteAllNotExistingWorlds();
         for (Home home : this.database.getAllHomes()) {
-            if (home.getHomeLocation().getWorld() == null) {
-                this.database.deleteWarp(home.getHomeUUID().toString());
-            } else {
-                this.addHome(home);
-            }
+            this.addHome(home);
         }
-}
+    }
+
+    private List<UUID> returnRetailedList(List<UUID> mainList, List<UUID> listToRetail) {
+        return listToRetail.stream().filter(item -> !mainList.contains(item)).collect(Collectors.toList());
+    }
+
+    private void deleteAllNotExistingWorlds() {
+        List<UUID> homesWorldsUUIDS = database.getAllHomes().stream().map(item -> item.getHomeLocation().getWorld().getUID()).collect(Collectors.toList());
+        for (UUID uuid : returnRetailedList(Bukkit.getWorlds().stream().map(World::getUID).collect(Collectors.toList()), homesWorldsUUIDS)) {
+            this.database.deleteHomeByWorldUUID(uuid.toString());
+        }
+    }
 
     public boolean isHomeRegister(Home home) {
         return homeMap.containsValue(home);

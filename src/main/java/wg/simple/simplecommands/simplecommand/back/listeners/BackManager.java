@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class BackManager implements Listener {
     private final Map<UUID, Location> backMap = new HashMap<>();
@@ -29,9 +30,20 @@ public class BackManager implements Listener {
         this.database = plugin.SQLmanager.database;
         this.languageConfig = plugin.configsManager.languageConfig;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        deleteAllNotExistingWorlds();
         loadAllFromDatabase();
     }
 
+    private List<UUID> returnRetailedList(List<UUID> mainList, List<UUID> listToRetail) {
+        return listToRetail.stream().filter(item -> !mainList.contains(item)).collect(Collectors.toList());
+    }
+
+    private void deleteAllNotExistingWorlds() {
+        List<UUID> homesWorldsUUIDS = database.getAllBacks().values().stream().map(location -> location.getWorld().getUID()).collect(Collectors.toList());
+        for (UUID uuid : returnRetailedList(Bukkit.getWorlds().stream().map(World::getUID).collect(Collectors.toList()), homesWorldsUUIDS)) {
+            this.database.deleteBackByWorldUUID(uuid.toString());
+        }
+    }
 
     private void addBack(UUID playerUUID, Location backLocation, boolean addToDatabase) {
         if (addToDatabase) {
@@ -57,16 +69,9 @@ public class BackManager implements Listener {
     }
 
     public void loadAllFromDatabase() {
-        List<List<String>> all = database.getAllBacks();
-        for (List<String> back : all) {
-            World world = Bukkit.getWorld(UUID.fromString(back.get(AdminGuiDatabase.WORLD_BACK_UUID)));
-            UUID playerUUID = UUID.fromString(back.get(AdminGuiDatabase.PLAYER_UUID_BACK));
-            double x = Double.parseDouble(back.get(AdminGuiDatabase.X_BACK));
-            double y = Double.parseDouble(back.get(AdminGuiDatabase.Y_BACK));
-            double z = Double.parseDouble(back.get(AdminGuiDatabase.Z_BACK));
-            float pitch = Float.parseFloat(back.get(AdminGuiDatabase.PITCH_BACK));
-            float yaw = Float.parseFloat(back.get(AdminGuiDatabase.YAW_BACK));
-            addBack(playerUUID, new Location(world, x, y, z, yaw, pitch), false);
+        Map<UUID, Location> all = database.getAllBacks();
+        for (Map.Entry<UUID, Location> entries : all.entrySet()) {
+            addBack(entries.getKey(), entries.getValue(), false);
         }
     }
 

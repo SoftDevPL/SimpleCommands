@@ -13,10 +13,8 @@ import wg.simple.simplecommands.fileManager.configsutils.configs.LanguageConfig;
 import wg.simple.simplecommands.fileManager.sql.sqlUtils.databasescommands.AdminGuiDatabase;
 import wg.simple.simplecommands.simplecommand.spawns.events.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class SpawnsManager implements Listener {
     private final Map<UUID, Location> spawnsMap = new HashMap<>();
@@ -36,8 +34,40 @@ public class SpawnsManager implements Listener {
         this.database = plugin.SQLmanager.database;
         this.teleportToHubWhenJoinFirstTime = plugin.configsManager.mainConfig.isTeleportWhenJoinFirst();
         this.alwaysTeleportToHubWhenJoin = plugin.configsManager.mainConfig.isAlwaysTeleportToHubWhenJoin();
-        loadAllFromDatabase();
+        deleteAllNotExistingWorlds();
+        setupHub();
+        setupSpawns();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
+
+    private void setupHub() {
+        List<Location> locations = this.database.getHub();
+        if (locations.isEmpty()) return;
+        this.hub = this.database.getHub().get(0);
+    }
+
+    private void setupSpawns() {
+        List<Location> locations = this.database.getSpawns();
+        if (locations.isEmpty()) return;
+        for (Location location: locations) {
+            spawnsMap.put(location.getWorld().getUID(), location);
+        }
+    }
+
+    private List<UUID> returnRetailedList(List<UUID> mainList, List<UUID> listToRetail) {
+        return listToRetail.stream().filter(item -> !mainList.contains(item)).collect(Collectors.toList());
+    }
+
+    private void deleteAllNotExistingWorlds() {
+        List<UUID> hubsWorldsUUIDS = database.getHub().stream().map(item -> item.getWorld().getUID()).collect(Collectors.toList());
+        List<UUID> spawnsWorldsUUIDS = database.getSpawns().stream().map(item -> item.getWorld().getUID()).collect(Collectors.toList());
+        for (UUID uuid : returnRetailedList(Bukkit.getWorlds().stream().map(World::getUID).collect(Collectors.toList()), hubsWorldsUUIDS)) {
+            this.database.deleteHubByWorldUUID(uuid.toString());
+        }
+
+        for (UUID uuid : returnRetailedList(Bukkit.getWorlds().stream().map(World::getUID).collect(Collectors.toList()), spawnsWorldsUUIDS)) {
+            this.database.deleteSpawnByWorldUUID(uuid.toString());
+        }
     }
 
     public Map<UUID, Location> getAllSpawns() {
@@ -66,7 +96,6 @@ public class SpawnsManager implements Listener {
         if (loc == null) return false;
         removeSpawnFromDatabase(worldUUID);
         return true;
-
     }
 
     public Location getSpawn(UUID worldUUID) {
@@ -79,7 +108,7 @@ public class SpawnsManager implements Listener {
 
     public void setHub(Location loc) {
         if (this.hub != null) {
-            database.deleteHub();
+            database.deleteHubByWorldUUID(loc.getWorld().getUID().toString());
         }
         this.hub = loc;
         database.insertIntoHubTable(loc.getWorld().getUID().toString(), loc.getX(), loc.getY(), loc.getZ(), loc.getPitch(), loc.getYaw());
@@ -93,11 +122,10 @@ public class SpawnsManager implements Listener {
     public void addingSpawns(PlayerSetSpawnEvent event) {
         if (hasSpawn(event.getNewSpawn().getWorld().getUID())) {
             event.getPlayer().sendMessage(languageConfig.getSpawnChanged());
-            addSpawn(event.getNewSpawn());
         } else {
             event.getPlayer().sendMessage(languageConfig.getSpawnCreated());
-            addSpawn(event.getNewSpawn());
         }
+        addSpawn(event.getNewSpawn());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -153,39 +181,6 @@ public class SpawnsManager implements Listener {
 
     public void removeSpawnFromDatabase(UUID worldUUID) {
         database.deleteSpawn(worldUUID.toString());
-    }
-
-    public void loadAllFromDatabase() {
-        List<List<String>> all = database.getAllSpawns();
-        for (List<String> one : all) {
-            try {
-                World world = Bukkit.getWorld(UUID.fromString(one.get(AdminGuiDatabase.WORLD_SPAWN_UUID)));
-                if (world == null) continue;
-                double x = Double.parseDouble(one.get(AdminGuiDatabase.X_SPAWN));
-                double y = Double.parseDouble(one.get(AdminGuiDatabase.Y_SPAWN));
-                double z = Double.parseDouble(one.get(AdminGuiDatabase.Z_SPAWN));
-                float yaw = Float.parseFloat(one.get(AdminGuiDatabase.YAW_SPAWN));
-                float pitch = Float.parseFloat(one.get(AdminGuiDatabase.PITCH_SPAWN));
-                Location spawn = new Location(world, x, y, z, yaw, pitch);
-                this.addSpawn(spawn, false);
-            } catch (Exception e) {
-                //  e.printStackTrace();
-            }
-        }
-        List<String> rawHub = database.getHub();
-        if (rawHub == null) return;
-        try {
-            World world = Bukkit.getWorld(UUID.fromString(rawHub.get(AdminGuiDatabase.WORLD_HUB_UUID)));
-            if (world == null) return;
-            double x = Double.parseDouble(rawHub.get(AdminGuiDatabase.X_HUB));
-            double y = Double.parseDouble(rawHub.get(AdminGuiDatabase.Y_HUB));
-            double z = Double.parseDouble(rawHub.get(AdminGuiDatabase.Z_HUB));
-            float yaw = Float.parseFloat(rawHub.get(AdminGuiDatabase.YAW_HUB));
-            float pitch = Float.parseFloat(rawHub.get(AdminGuiDatabase.PITCH_HUB));
-            this.hub = new Location(world, x, y, z, yaw, pitch);
-        } catch (Exception e) {
-            //  e.printStackTrace();
-        }
     }
 
     @EventHandler
