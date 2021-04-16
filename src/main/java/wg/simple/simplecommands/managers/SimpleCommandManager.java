@@ -9,7 +9,6 @@ import wg.simple.simplecommands.simplecommand.msg.comands.UnBlockCommand;
 import wg.simple.simplecommands.simplecommand.rtp.command.RtpCommand;
 import wg.simple.simplecommands.simplecommand.spawns.commands.*;
 import wg.simple.simplecommands.simplecommand.stockcommand.InfCommand;
-import wg.simple.simplecommands.simplecommand.sudo.commands.SudoCommand;
 import wg.simple.simplecommands.simplecommand.tp.commands.TpaCommand;
 import wg.simple.simplecommands.simplecommand.tp.commands.TpacceptCommand;
 import wg.simple.simplecommands.simplecommand.tp.commands.TpdenyCommand;
@@ -42,7 +41,6 @@ public class SimpleCommandManager {
         simpleCommands.getCommand("sethub").setExecutor(new SetHubCommand(simpleCommands));
         simpleCommands.getCommand("hub").setExecutor(new HubCommand(simpleCommands));
         simpleCommands.getCommand("warplist").setExecutor(new WarpListCommand(simpleCommands));
-        simpleCommands.getCommand("sudo").setExecutor(new SudoCommand(simpleCommands));
         new HomeMenuCommand(simpleCommands.getCommand("homemenu"));
         new WarpMenuCommand(simpleCommands.getCommand("warpmenu"));
     }

@@ -97,10 +97,6 @@ commands:
     usage: /hub
     description: teleport to hub
     permission: watchTowerGui.commands.player.hub
-  sudo:
-    usage: /sudo [player] [command_and_arguments]
-    description: execute command as another player
-    permission: watchTowerGui.commands.admin.sudo
   homeMenu:
     usage: /homemenu [player]
     description: show player's homes
