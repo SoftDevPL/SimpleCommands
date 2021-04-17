@@ -36,8 +36,12 @@ public class HomeManager implements Listener {
         this.premiumHomeLimit = plugin.configsManager.mainConfig.getHomePremiumLimit();
         languageConfig = plugin.configsManager.languageConfig;
         deleteAllNotExistingWorlds();
-        for (Home home : this.database.getAllHomes()) {
-            this.addHome(home);
+        setupHomes();
+    }
+
+    private void setupHomes() {
+        for (Map.Entry<UUID, Home> entry: database.getAllHomes().entrySet()) {
+            this.addHome(entry.getValue());
         }
     }
 
@@ -46,7 +50,16 @@ public class HomeManager implements Listener {
     }
 
     private void deleteAllNotExistingWorlds() {
-        List<UUID> homesWorldsUUIDS = database.getAllHomes().stream().map(item -> item.getHomeLocation().getWorld().getUID()).collect(Collectors.toList());
+        List<UUID> homesWorldsUUIDS = new ArrayList<>();
+
+        for (Map.Entry<UUID, Home> entry: database.getAllHomes().entrySet()) {
+            if (entry.getValue().getHomeLocation().getWorld() == null) {
+                database.deleteHubByWorldUUID(entry.getKey().toString());
+            } else {
+                homesWorldsUUIDS.add(entry.getKey());
+            }
+        }
+
         for (UUID uuid : returnRetailedList(Bukkit.getWorlds().stream().map(World::getUID).collect(Collectors.toList()), homesWorldsUUIDS)) {
             this.database.deleteHomeByWorldUUID(uuid.toString());
         }

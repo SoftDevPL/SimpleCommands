@@ -15,6 +15,7 @@ import wg.simple.simplecommands.simplecommand.warps.events.RemoveWarpEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,13 @@ public class WarpManager implements Listener {
         this.database = plugin.SQLmanager.database;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         deleteAllNotExistingWorlds();
-        warpList = database.getAllWarps();
+        setupWarps();
+    }
+
+    private void setupWarps() {
+        for (Map.Entry<UUID, Warp> entry: database.getAllWarps().entrySet()) {
+            warpList.add(entry.getValue());
+        }
     }
 
     private List<UUID> returnRetailedList(List<UUID> mainList, List<UUID> listToRetail) {
@@ -35,7 +42,16 @@ public class WarpManager implements Listener {
     }
 
     private void deleteAllNotExistingWorlds() {
-        List<UUID> warpsWorldsUUIDS = database.getAllWarps().stream().map(item -> item.getLocation().getWorld().getUID()).collect(Collectors.toList());
+        List<UUID> warpsWorldsUUIDS = new ArrayList<>();
+
+        for (Map.Entry<UUID, Warp> entry: database.getAllWarps().entrySet()) {
+            if (entry.getValue().getLocation().getWorld() == null) {
+                database.deleteWarpByWorldUUID(entry.getKey().toString());
+            } else {
+                warpsWorldsUUIDS.add(entry.getKey());
+            }
+        }
+
         for (UUID uuid : returnRetailedList(Bukkit.getWorlds().stream().map(World::getUID).collect(Collectors.toList()), warpsWorldsUUIDS)) {
             this.database.deleteWarpByWorldUUID(uuid.toString());
         }

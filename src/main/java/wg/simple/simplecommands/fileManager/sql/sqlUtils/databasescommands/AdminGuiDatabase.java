@@ -197,10 +197,10 @@ public class AdminGuiDatabase extends CustomSQLInterface {
                 }, sql);
     }
 
-    public List<Location> getHub() {
+    public Map<UUID, Location> getHub() {
         String sql = "SELECT * FROM " + hubTable;
-        return new Worker<List<Location>>().getSomething(rs -> {
-           List<Location> locations = new ArrayList<>();
+        return new Worker<Map<UUID, Location>>().getSomething(rs -> {
+            Map<UUID, Location> locations = new HashMap<>();
             while (rs.next()) {
                 World world = Bukkit.getServer().getWorld(UUID.fromString(rs.getString(this.worldUUID)));
                 Location location = new Location(
@@ -210,16 +210,16 @@ public class AdminGuiDatabase extends CustomSQLInterface {
                         rs.getDouble(this.z),
                         rs.getFloat(this.yaw),
                         rs.getFloat(this.pitch));
-                locations.add(location);
+                locations.put(UUID.fromString(rs.getString(this.worldUUID)), location);
             }
             return locations;
         }, sql);
     }
 
-    public List<Location> getSpawns() {
+    public Map<UUID, Location> getSpawns() {
         String sql = "SELECT * FROM " + spawnsTable;
-        return new Worker<List<Location>>().getSomething(rs -> {
-            List<Location> locations = new ArrayList<>();
+        return new Worker<Map<UUID, Location>>().getSomething(rs -> {
+            Map<UUID, Location> locations = new HashMap<>();
             while (rs.next()) {
                 World world = Bukkit.getServer().getWorld(UUID.fromString(rs.getString(this.worldUUID)));
                 Location location = new Location(
@@ -229,16 +229,16 @@ public class AdminGuiDatabase extends CustomSQLInterface {
                         rs.getDouble(this.z),
                         rs.getFloat(this.yaw),
                         rs.getFloat(this.pitch));
-                locations.add(location);
+                locations.put(UUID.fromString(rs.getString(this.worldUUID)), location);
             }
             return locations;
         }, sql);
     }
 
-    public List<Warp> getAllWarps() {
+    public Map<UUID, Warp> getAllWarps() {
         String sql = "SELECT * FROM " + this.playersWarpTable;
-        return new Worker<List<Warp>>().getSomething(rs -> {
-            List<Warp> warpList = new ArrayList<>();
+        return new Worker<Map<UUID, Warp>>().getSomething(rs -> {
+            Map<UUID, Warp> warpList = new HashMap<>();
             while (rs.next()) {
                 World world = Bukkit.getServer().getWorld(UUID.fromString(rs.getString(this.worldUUID)));
                 Location location = new Location(
@@ -253,7 +253,7 @@ public class AdminGuiDatabase extends CustomSQLInterface {
                         rs.getString(this.warpName),
                         UUID.fromString(rs.getString(this.warpUUID))
                 );
-                warpList.add(warp);
+                warpList.put(UUID.fromString(rs.getString(this.worldUUID)), warp);
             }
             return warpList;
         }, sql);
@@ -278,10 +278,10 @@ public class AdminGuiDatabase extends CustomSQLInterface {
         }, sql);
     }
 
-    public List<Home> getAllHomes() {
+    public Map<UUID, Home> getAllHomes() {
         String sql = "SELECT * FROM " + this.homesTable;
-        return new Worker<List<Home>>().getSomething(rs -> {
-            List<Home> playerHomes = new ArrayList<>();
+        return new Worker<Map<UUID, Home>>().getSomething(rs -> {
+            Map<UUID, Home> playerHomes = new HashMap<>();
             while (rs.next()) {
                 World world = Bukkit.getServer().getWorld(UUID.fromString(rs.getString(this.worldUUID)));
                 Location homeLocation = new Location(
@@ -298,7 +298,7 @@ public class AdminGuiDatabase extends CustomSQLInterface {
                        UUID.fromString(rs.getString(this.homeUUID))
 
                );
-                playerHomes.add(home);
+                playerHomes.put(UUID.fromString(rs.getString(this.worldUUID)), home);
             }
             return playerHomes;
         }, sql);

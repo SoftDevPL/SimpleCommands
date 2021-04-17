@@ -14,10 +14,7 @@ import wg.simple.simplecommands.fileManager.configsutils.configs.LanguageConfig;
 import wg.simple.simplecommands.fileManager.sql.sqlUtils.databasescommands.AdminGuiDatabase;
 import wg.simple.simplecommands.simplecommand.back.events.PlayerBackEvent;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BackManager implements Listener {
@@ -39,8 +36,17 @@ public class BackManager implements Listener {
     }
 
     private void deleteAllNotExistingWorlds() {
-        List<UUID> homesWorldsUUIDS = database.getAllBacks().values().stream().map(location -> location.getWorld().getUID()).collect(Collectors.toList());
-        for (UUID uuid : returnRetailedList(Bukkit.getWorlds().stream().map(World::getUID).collect(Collectors.toList()), homesWorldsUUIDS)) {
+        List<UUID> homesWorldsUUIDS = new ArrayList<>();
+
+        for (Map.Entry<UUID, Location> entry: database.getAllBacks().entrySet()) {
+            if (entry.getValue().getWorld() == null) {
+                database.deleteHubByWorldUUID(entry.getKey().toString());
+            } else {
+                homesWorldsUUIDS.add(entry.getKey());
+            }
+        }
+
+       for (UUID uuid : returnRetailedList(Bukkit.getWorlds().stream().map(World::getUID).collect(Collectors.toList()), homesWorldsUUIDS)) {
             this.database.deleteBackByWorldUUID(uuid.toString());
         }
     }

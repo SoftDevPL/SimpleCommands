@@ -8,6 +8,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.omg.CORBA.MARSHAL;
 import wg.simple.simplecommands.SimpleCommands;
 import wg.simple.simplecommands.fileManager.configsutils.configs.LanguageConfig;
 import wg.simple.simplecommands.fileManager.sql.sqlUtils.databasescommands.AdminGuiDatabase;
@@ -41,16 +42,18 @@ public class SpawnsManager implements Listener {
     }
 
     private void setupHub() {
-        List<Location> locations = this.database.getHub();
+        Map<UUID, Location> locations = this.database.getHub();
         if (locations.isEmpty()) return;
-        this.hub = this.database.getHub().get(0);
+        for (Map.Entry<UUID, Location> entry: database.getHub().entrySet()) {
+            this.hub = entry.getValue();
+        }
     }
 
     private void setupSpawns() {
-        List<Location> locations = this.database.getSpawns();
+        Map<UUID, Location> locations = this.database.getSpawns();
         if (locations.isEmpty()) return;
-        for (Location location: locations) {
-            spawnsMap.put(location.getWorld().getUID(), location);
+        for (Map.Entry<UUID, Location> entry: database.getHub().entrySet()) {
+            spawnsMap.put(entry.getKey(), entry.getValue());
         }
     }
 
@@ -59,8 +62,25 @@ public class SpawnsManager implements Listener {
     }
 
     private void deleteAllNotExistingWorlds() {
-        List<UUID> hubsWorldsUUIDS = database.getHub().stream().map(item -> item.getWorld().getUID()).collect(Collectors.toList());
-        List<UUID> spawnsWorldsUUIDS = database.getSpawns().stream().map(item -> item.getWorld().getUID()).collect(Collectors.toList());
+        List<UUID> hubsWorldsUUIDS = new ArrayList<>();
+        List<UUID> spawnsWorldsUUIDS = new ArrayList<>();
+
+        for (Map.Entry<UUID, Location> entry: database.getHub().entrySet()) {
+            if (entry.getValue().getWorld() == null) {
+                database.deleteHubByWorldUUID(entry.getKey().toString());
+            } else {
+                hubsWorldsUUIDS.add(entry.getKey());
+            }
+        }
+
+        for (Map.Entry<UUID, Location> entry: database.getSpawns().entrySet()) {
+            if (entry.getValue().getWorld() == null) {
+                database.deleteHubByWorldUUID(entry.getKey().toString());
+            } else {
+                spawnsWorldsUUIDS.add(entry.getKey());
+            }
+        }
+
         for (UUID uuid : returnRetailedList(Bukkit.getWorlds().stream().map(World::getUID).collect(Collectors.toList()), hubsWorldsUUIDS)) {
             this.database.deleteHubByWorldUUID(uuid.toString());
         }
