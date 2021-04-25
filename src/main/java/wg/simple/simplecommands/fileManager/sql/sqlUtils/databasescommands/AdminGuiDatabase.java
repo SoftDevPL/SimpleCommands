@@ -274,7 +274,7 @@ public class AdminGuiDatabase extends CustomSQLInterface {
                         rs.getDouble(this.z),
                         rs.getFloat(this.yaw),
                         rs.getFloat(this.pitch));
-                playerBacks.put(UUID.fromString(rs.getString(this.playerUUID)), location);
+                playerBacks.put(UUID.fromString(rs.getString(this.worldUUID)), location);
             }
             return playerBacks;
         }, sql);

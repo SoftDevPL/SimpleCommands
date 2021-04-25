@@ -41,7 +41,8 @@ public class BackManager implements Listener {
 
         for (Map.Entry<UUID, Location> entry: database.getAllBacks().entries()) {
             if (entry.getValue().getWorld() == null) {
-                database.deleteHubByWorldUUID(entry.getKey().toString());
+                System.out.println(entry.getKey().toString());
+                database.deleteBackByWorldUUID(entry.getKey().toString());
             } else {
                 homesWorldsUUIDS.add(entry.getKey());
             }

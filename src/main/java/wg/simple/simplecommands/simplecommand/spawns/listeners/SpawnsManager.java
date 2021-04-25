@@ -76,7 +76,7 @@ public class SpawnsManager implements Listener {
 
         for (Map.Entry<UUID, Location> entry: database.getSpawns().entries()) {
             if (entry.getValue().getWorld() == null) {
-                database.deleteHubByWorldUUID(entry.getKey().toString());
+                database.deleteSpawnByWorldUUID(entry.getKey().toString());
             } else {
                 spawnsWorldsUUIDS.add(entry.getKey());
             }
