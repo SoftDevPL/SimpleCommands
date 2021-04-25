@@ -1,5 +1,6 @@
 package wg.simple.simplecommands.simplecommand.spawns.listeners;
 
+import com.google.common.collect.Multimap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -50,7 +51,7 @@ public class SpawnsManager implements Listener {
     }
 
     private void setupSpawns() {
-        Map<UUID, Location> locations = this.database.getSpawns();
+        Multimap<UUID, Location> locations = this.database.getSpawns();
         if (locations.isEmpty()) return;
         for (Map.Entry<UUID, Location> entry: database.getHub().entrySet()) {
             spawnsMap.put(entry.getKey(), entry.getValue());
@@ -73,7 +74,7 @@ public class SpawnsManager implements Listener {
             }
         }
 
-        for (Map.Entry<UUID, Location> entry: database.getSpawns().entrySet()) {
+        for (Map.Entry<UUID, Location> entry: database.getSpawns().entries()) {
             if (entry.getValue().getWorld() == null) {
                 database.deleteHubByWorldUUID(entry.getKey().toString());
             } else {

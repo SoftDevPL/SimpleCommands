@@ -1,5 +1,6 @@
 package wg.simple.simplecommands.simplecommand.back.listeners;
 
+import com.google.common.collect.Multimap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -38,7 +39,7 @@ public class BackManager implements Listener {
     private void deleteAllNotExistingWorlds() {
         List<UUID> homesWorldsUUIDS = new ArrayList<>();
 
-        for (Map.Entry<UUID, Location> entry: database.getAllBacks().entrySet()) {
+        for (Map.Entry<UUID, Location> entry: database.getAllBacks().entries()) {
             if (entry.getValue().getWorld() == null) {
                 database.deleteHubByWorldUUID(entry.getKey().toString());
             } else {
@@ -75,8 +76,8 @@ public class BackManager implements Listener {
     }
 
     public void loadAllFromDatabase() {
-        Map<UUID, Location> all = database.getAllBacks();
-        for (Map.Entry<UUID, Location> entries : all.entrySet()) {
+        Multimap<UUID, Location> all = database.getAllBacks();
+        for (Map.Entry<UUID, Location> entries : all.entries()) {
             addBack(entries.getKey(), entries.getValue(), false);
         }
     }

@@ -1,5 +1,7 @@
 package wg.simple.simplecommands.fileManager.sql.sqlUtils.databasescommands;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -216,10 +218,10 @@ public class AdminGuiDatabase extends CustomSQLInterface {
         }, sql);
     }
 
-    public Map<UUID, Location> getSpawns() {
+    public Multimap<UUID, Location> getSpawns() {
         String sql = "SELECT * FROM " + spawnsTable;
-        return new Worker<Map<UUID, Location>>().getSomething(rs -> {
-            Map<UUID, Location> locations = new HashMap<>();
+        return new Worker<Multimap<UUID, Location>>().getSomething(rs -> {
+            Multimap<UUID, Location> locations = ArrayListMultimap.create();
             while (rs.next()) {
                 World world = Bukkit.getServer().getWorld(UUID.fromString(rs.getString(this.worldUUID)));
                 Location location = new Location(
@@ -235,10 +237,10 @@ public class AdminGuiDatabase extends CustomSQLInterface {
         }, sql);
     }
 
-    public Map<UUID, Warp> getAllWarps() {
+    public Multimap<UUID, Warp> getAllWarps() {
         String sql = "SELECT * FROM " + this.playersWarpTable;
-        return new Worker<Map<UUID, Warp>>().getSomething(rs -> {
-            Map<UUID, Warp> warpList = new HashMap<>();
+        return new Worker<Multimap<UUID, Warp>>().getSomething(rs -> {
+            Multimap<UUID, Warp> warpList = ArrayListMultimap.create();
             while (rs.next()) {
                 World world = Bukkit.getServer().getWorld(UUID.fromString(rs.getString(this.worldUUID)));
                 Location location = new Location(
@@ -259,10 +261,10 @@ public class AdminGuiDatabase extends CustomSQLInterface {
         }, sql);
     }
 
-    public Map<UUID, Location> getAllBacks() {
+    public Multimap<UUID, Location> getAllBacks() {
         String sql = "SELECT * FROM " + this.playerBackTable;
-        return new Worker<Map<UUID, Location>>().getSomething(rs -> {
-            Map<UUID, Location> playerBacks = new HashMap<>();
+        return new Worker<Multimap<UUID, Location>>().getSomething(rs -> {
+            Multimap<UUID, Location> playerBacks = ArrayListMultimap.create();
             while (rs.next()) {
                 World world = Bukkit.getServer().getWorld(UUID.fromString(rs.getString(this.worldUUID)));
                 Location location = new Location(
@@ -278,10 +280,10 @@ public class AdminGuiDatabase extends CustomSQLInterface {
         }, sql);
     }
 
-    public Map<UUID, Home> getAllHomes() {
+    public Multimap<UUID, Home> getAllHomes() {
         String sql = "SELECT * FROM " + this.homesTable;
-        return new Worker<Map<UUID, Home>>().getSomething(rs -> {
-            Map<UUID, Home> playerHomes = new HashMap<>();
+        return new Worker<Multimap<UUID, Home>>().getSomething(rs -> {
+            Multimap<UUID, Home> playerHomes = ArrayListMultimap.create();
             while (rs.next()) {
                 World world = Bukkit.getServer().getWorld(UUID.fromString(rs.getString(this.worldUUID)));
                 Location homeLocation = new Location(

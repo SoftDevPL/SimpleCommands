@@ -7,7 +7,6 @@ import wg.simple.simplecommands.simplecommand.msg.listeners.MsgListener;
 import wg.simple.simplecommands.simplecommand.rtp.listeners.RtpManager;
 import wg.simple.simplecommands.simplecommand.spawns.listeners.SpawnsManager;
 import wg.simple.simplecommands.simplecommand.stockcommand.HelpPermission;
-import wg.simple.simplecommands.simplecommand.sudo.listeners.SudoListener;
 import wg.simple.simplecommands.simplecommand.tp.listeners.TeleportManager;
 import wg.simple.simplecommands.simplecommand.tp.listeners.TpaManager;
 import wg.simple.simplecommands.simplecommand.warps.listeners.WarpManager;
@@ -23,7 +22,6 @@ public class ListenersManager {
     public RtpManager rtpManager;
     public WarpManager warpManager;
     public SpawnsManager spawnsManager;
-    public SudoListener sudoListener;
     public MsgListener msgListener;
 
     public ListenersManager() {
@@ -37,7 +35,6 @@ public class ListenersManager {
         this.backManager = new BackManager();
         this.rtpManager = new RtpManager();
         this.msgListener = new MsgListener();
-        this.sudoListener = new SudoListener();
     }
 
     public void init() {
@@ -51,6 +48,5 @@ public class ListenersManager {
         this.backManager.init();
         this.rtpManager.init();
         this.msgListener.init();
-        this.sudoListener.init();
     }
 }

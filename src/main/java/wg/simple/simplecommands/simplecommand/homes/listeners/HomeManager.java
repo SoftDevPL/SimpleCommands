@@ -35,12 +35,13 @@ public class HomeManager implements Listener {
         this.normalHomeLimit = plugin.configsManager.mainConfig.getHomeNormalLimit();
         this.premiumHomeLimit = plugin.configsManager.mainConfig.getHomePremiumLimit();
         languageConfig = plugin.configsManager.languageConfig;
+        System.out.println(database.getAllHomes());
         deleteAllNotExistingWorlds();
         setupHomes();
     }
 
     private void setupHomes() {
-        for (Map.Entry<UUID, Home> entry: database.getAllHomes().entrySet()) {
+        for (Map.Entry<UUID, Home> entry: database.getAllHomes().entries()) {
             this.addHome(entry.getValue());
         }
     }
@@ -52,7 +53,7 @@ public class HomeManager implements Listener {
     private void deleteAllNotExistingWorlds() {
         List<UUID> homesWorldsUUIDS = new ArrayList<>();
 
-        for (Map.Entry<UUID, Home> entry: database.getAllHomes().entrySet()) {
+        for (Map.Entry<UUID, Home> entry: database.getAllHomes().entries()) {
             if (entry.getValue().getHomeLocation().getWorld() == null) {
                 database.deleteHubByWorldUUID(entry.getKey().toString());
             } else {

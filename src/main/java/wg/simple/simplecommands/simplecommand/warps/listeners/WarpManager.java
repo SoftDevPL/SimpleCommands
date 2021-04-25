@@ -32,7 +32,7 @@ public class WarpManager implements Listener {
     }
 
     private void setupWarps() {
-        for (Map.Entry<UUID, Warp> entry: database.getAllWarps().entrySet()) {
+        for (Map.Entry<UUID, Warp> entry: database.getAllWarps().entries()) {
             warpList.add(entry.getValue());
         }
     }
@@ -44,7 +44,7 @@ public class WarpManager implements Listener {
     private void deleteAllNotExistingWorlds() {
         List<UUID> warpsWorldsUUIDS = new ArrayList<>();
 
-        for (Map.Entry<UUID, Warp> entry: database.getAllWarps().entrySet()) {
+        for (Map.Entry<UUID, Warp> entry: database.getAllWarps().entries()) {
             if (entry.getValue().getLocation().getWorld() == null) {
                 database.deleteWarpByWorldUUID(entry.getKey().toString());
             } else {
