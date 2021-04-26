@@ -50,7 +50,6 @@ public class SpawnsManager implements Listener {
 
     private void setupSpawns() {
         Map<UUID, Location> locations = this.database.getSpawns();
-        System.out.println(locations);
         if (locations.isEmpty()) return;
         for (Map.Entry<UUID, Location> entry : locations.entrySet()) {
             spawnsMap.put(entry.getKey(), entry.getValue());
