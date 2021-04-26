@@ -9,7 +9,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.omg.CORBA.MARSHAL;
 import wg.simple.simplecommands.SimpleCommands;
 import wg.simple.simplecommands.fileManager.configsutils.configs.LanguageConfig;
 import wg.simple.simplecommands.fileManager.sql.sqlUtils.databasescommands.AdminGuiDatabase;
@@ -45,15 +44,16 @@ public class SpawnsManager implements Listener {
     private void setupHub() {
         Map<UUID, Location> locations = this.database.getHub();
         if (locations.isEmpty()) return;
-        for (Map.Entry<UUID, Location> entry: database.getHub().entrySet()) {
+        for (Map.Entry<UUID, Location> entry: locations.entrySet()) {
             this.hub = entry.getValue();
         }
     }
 
     private void setupSpawns() {
-        Multimap<UUID, Location> locations = this.database.getSpawns();
+        Map<UUID, Location> locations = this.database.getSpawns();
+        System.out.println(locations);
         if (locations.isEmpty()) return;
-        for (Map.Entry<UUID, Location> entry: database.getHub().entrySet()) {
+        for (Map.Entry<UUID, Location> entry: locations.entrySet()) {
             spawnsMap.put(entry.getKey(), entry.getValue());
         }
     }
@@ -74,7 +74,7 @@ public class SpawnsManager implements Listener {
             }
         }
 
-        for (Map.Entry<UUID, Location> entry: database.getSpawns().entries()) {
+        for (Map.Entry<UUID, Location> entry: database.getSpawns().entrySet()) {
             if (entry.getValue().getWorld() == null) {
                 database.deleteSpawnByWorldUUID(entry.getKey().toString());
             } else {

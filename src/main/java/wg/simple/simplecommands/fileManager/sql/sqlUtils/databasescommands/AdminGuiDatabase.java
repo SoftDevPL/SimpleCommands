@@ -218,10 +218,10 @@ public class AdminGuiDatabase extends CustomSQLInterface {
         }, sql);
     }
 
-    public Multimap<UUID, Location> getSpawns() {
+    public Map<UUID, Location> getSpawns() {
         String sql = "SELECT * FROM " + spawnsTable;
-        return new Worker<Multimap<UUID, Location>>().getSomething(rs -> {
-            Multimap<UUID, Location> locations = ArrayListMultimap.create();
+        return new Worker<Map<UUID, Location>>().getSomething(rs -> {
+            Map<UUID, Location> locations = new HashMap<>();
             while (rs.next()) {
                 World world = Bukkit.getServer().getWorld(UUID.fromString(rs.getString(this.worldUUID)));
                 Location location = new Location(
