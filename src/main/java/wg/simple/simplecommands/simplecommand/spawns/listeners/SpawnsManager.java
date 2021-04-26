@@ -1,6 +1,5 @@
 package wg.simple.simplecommands.simplecommand.spawns.listeners;
 
-import com.google.common.collect.Multimap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -44,7 +43,7 @@ public class SpawnsManager implements Listener {
     private void setupHub() {
         Map<UUID, Location> locations = this.database.getHub();
         if (locations.isEmpty()) return;
-        for (Map.Entry<UUID, Location> entry: locations.entrySet()) {
+        for (Map.Entry<UUID, Location> entry : locations.entrySet()) {
             this.hub = entry.getValue();
         }
     }
@@ -53,7 +52,7 @@ public class SpawnsManager implements Listener {
         Map<UUID, Location> locations = this.database.getSpawns();
         System.out.println(locations);
         if (locations.isEmpty()) return;
-        for (Map.Entry<UUID, Location> entry: locations.entrySet()) {
+        for (Map.Entry<UUID, Location> entry : locations.entrySet()) {
             spawnsMap.put(entry.getKey(), entry.getValue());
         }
     }
@@ -66,7 +65,7 @@ public class SpawnsManager implements Listener {
         List<UUID> hubsWorldsUUIDS = new ArrayList<>();
         List<UUID> spawnsWorldsUUIDS = new ArrayList<>();
 
-        for (Map.Entry<UUID, Location> entry: database.getHub().entrySet()) {
+        for (Map.Entry<UUID, Location> entry : database.getHub().entrySet()) {
             if (entry.getValue().getWorld() == null) {
                 database.deleteHubByWorldUUID(entry.getKey().toString());
             } else {
@@ -74,7 +73,7 @@ public class SpawnsManager implements Listener {
             }
         }
 
-        for (Map.Entry<UUID, Location> entry: database.getSpawns().entrySet()) {
+        for (Map.Entry<UUID, Location> entry : database.getSpawns().entrySet()) {
             if (entry.getValue().getWorld() == null) {
                 database.deleteSpawnByWorldUUID(entry.getKey().toString());
             } else {

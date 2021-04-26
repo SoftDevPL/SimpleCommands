@@ -293,13 +293,13 @@ public class AdminGuiDatabase extends CustomSQLInterface {
                         rs.getDouble(this.z),
                         rs.getFloat(this.yaw),
                         rs.getFloat(this.pitch));
-               Home home = new Home(
-                       UUID.fromString(rs.getString(this.playerUUID)),
-                       homeLocation,
-                       rs.getString(this.homeName),
-                       UUID.fromString(rs.getString(this.homeUUID))
+                Home home = new Home(
+                        UUID.fromString(rs.getString(this.playerUUID)),
+                        homeLocation,
+                        rs.getString(this.homeName),
+                        UUID.fromString(rs.getString(this.homeUUID))
 
-               );
+                );
                 playerHomes.put(UUID.fromString(rs.getString(this.worldUUID)), home);
             }
             return playerHomes;
